@@ -1,5 +1,6 @@
 import com.android.build.gradle.LibraryExtension
 import com.ojh.convention.configureKotlinAndroid
+import com.ojh.convention.libs
 import com.ojh.convention.targetSdkVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -26,6 +27,7 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
                 resourcePrefix = path.split("""\W""".toRegex()).drop(1).distinct().joinToString(separator = "_").lowercase() + "_"
             }
             dependencies {
+                add("implementation", libs.findLibrary("timber").get())
                 add("androidTestImplementation", kotlin("test"))
                 add("testImplementation", kotlin("test"))
             }

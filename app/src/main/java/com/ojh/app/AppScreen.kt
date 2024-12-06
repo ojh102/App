@@ -29,9 +29,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.ojh.app.ui.theme.AppTheme
-import com.ojh.feature.album.AlbumScreen
-import com.ojh.feature.library.LibraryScreen
+import com.ojh.feature.album.AlbumRoute
+import com.ojh.feature.library.LibraryRoute
 import com.ojh.feature.library.PlayerScreen
 
 internal enum class AppScreen(@StringRes val title: Int) {
@@ -54,7 +53,7 @@ internal fun AppBar(
         ),
         modifier = modifier,
         navigationIcon = {
-            if(canNavigateBack) {
+            if (canNavigateBack) {
                 IconButton(onClick = navigateUp) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
@@ -94,10 +93,20 @@ internal fun App(
                 modifier = Modifier.weight(1f, true)
             ) {
                 composable(route = AppScreen.Library.name) {
-                    LibraryScreen(modifier = Modifier.fillMaxSize().background(Color.Red))
+                    LibraryRoute(
+                        modifier = Modifier
+                            .fillMaxSize(),
+                        onNavigateToAlbum = {
+                            navController.navigate(AppScreen.Album.name)
+                        }
+                    )
                 }
                 composable(route = AppScreen.Album.name) {
-                    AlbumScreen(modifier = Modifier.fillMaxSize().background(Color.Green))
+                    AlbumRoute(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(Color.Green)
+                    )
                 }
             }
             PlayerScreen(
@@ -121,7 +130,7 @@ internal fun Greeting(name: String, modifier: Modifier = Modifier) {
 @Preview(showBackground = true)
 @Composable
 internal fun GreetingPreview() {
-    AppTheme {
+    MaterialTheme {
         Greeting("Android")
     }
 }

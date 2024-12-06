@@ -1,4 +1,4 @@
-package com.ojh.app.ui.theme
+package com.ojh.core.compose.theme
 
 import androidx.compose.ui.graphics.Color
 

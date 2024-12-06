@@ -5,6 +5,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
 @Composable
-fun AlbumScreen(modifier: Modifier = Modifier) {
+fun AlbumRoute(modifier: Modifier = Modifier) {
     Text(text = "앨범", modifier = modifier)
 }
