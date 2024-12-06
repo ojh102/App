@@ -35,4 +35,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":feature:library"))
+    implementation(project(":feature:album"))
+    implementation(project(":feature:player"))
 }

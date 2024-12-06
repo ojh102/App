@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">App</string>
+    <string name="library">라이브러리</string>
+    <string name="album">앨범</string>
 </resources>
