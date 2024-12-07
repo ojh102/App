@@ -10,4 +10,5 @@ interface MediaSessionRepository {
     fun prev()
     fun shuffle()
     fun repeat()
+    fun changeVolume(volume: Float)
 }

@@ -17,6 +17,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -31,6 +32,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import com.ojh.core.compose.theme.AppTheme
 import com.ojh.core.model.MusicInfo
+import timber.log.Timber
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -84,7 +86,8 @@ private fun PlayerContent(
                 onClickPrev = { onAction(PlayerAction.ClickPrev) },
                 onClickPlayOrPause = { onAction(PlayerAction.ClickPlayOrPause) },
                 onClickNext = { onAction(PlayerAction.ClickNext) },
-                onClickShuffle = { onAction(PlayerAction.ClickShuffle) }
+                onClickShuffle = { onAction(PlayerAction.ClickShuffle) },
+                onChangeVolume = { onAction(PlayerAction.ChangeVolume(it)) }
             )
         } else {
             CollapsedPlayerContent(
@@ -102,7 +105,8 @@ private fun ExpandedPlayerContent(
     onClickPrev: () -> Unit,
     onClickPlayOrPause: () -> Unit,
     onClickNext: () -> Unit,
-    onClickShuffle: () -> Unit
+    onClickShuffle: () -> Unit,
+    onChangeVolume: (Float) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -188,6 +192,17 @@ private fun ExpandedPlayerContent(
                 }
             }
         }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Timber.e("재환아 uiState.musicInfo.volume = ${uiState.musicInfo.volume}")
+        Slider(
+            modifier = Modifier.padding(horizontal = 16.dp),
+            value = uiState.musicInfo.volume,
+            onValueChange = onChangeVolume,
+            steps = 10
+        )
+        Text(text = "현재 볼륨 : ${uiState.musicInfo.volume}")
     }
 }
 
@@ -278,7 +293,8 @@ private fun ExpandedPlayerContentPreview() {
             onClickNext = {},
             onClickShuffle = {},
             onClickPrev = {},
-            onClickPlayOrPause = {}
+            onClickPlayOrPause = {},
+            onChangeVolume = {}
         )
     }
 }
@@ -295,7 +311,8 @@ private fun ExpandedPlayerContentPreview_empty() {
             onClickNext = {},
             onClickShuffle = {},
             onClickPrev = {},
-            onClickPlayOrPause = {}
+            onClickPlayOrPause = {},
+            onChangeVolume = {}
         )
     }
 }

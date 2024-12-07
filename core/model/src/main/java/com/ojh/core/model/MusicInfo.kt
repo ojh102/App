@@ -11,5 +11,6 @@ data class MusicInfo(
     val hasPrev: Boolean = false,
     val hasNext: Boolean = false,
     val isRepeated: Boolean = false,
-    val isShuffled: Boolean = false
+    val isShuffled: Boolean = false,
+    val volume: Float = 1.0f
 )

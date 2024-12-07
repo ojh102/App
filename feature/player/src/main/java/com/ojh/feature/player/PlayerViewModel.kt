@@ -41,6 +41,7 @@ internal class PlayerViewModel @Inject constructor(
             is PlayerAction.ClickPrev -> clickPrev()
             is PlayerAction.ClickRepeat -> clickRepeat()
             is PlayerAction.ClickShuffle -> clickShuffle()
+            is PlayerAction.ChangeVolume -> changeVolume(action.volume)
         }
     }
 
@@ -68,6 +69,10 @@ internal class PlayerViewModel @Inject constructor(
 
     private fun clickShuffle() {
         mediaSessionRepository.shuffle()
+    }
+
+    private fun changeVolume(volume: Float) {
+        mediaSessionRepository.changeVolume(volume)
     }
 
     private fun clickPlayer() {

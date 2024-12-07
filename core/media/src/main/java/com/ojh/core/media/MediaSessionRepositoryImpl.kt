@@ -53,6 +53,11 @@ internal class MediaSessionRepositoryImpl @Inject constructor(
                         super.onRepeatModeChanged(repeatMode)
                         updateMusicInfo()
                     }
+
+                    override fun onVolumeChanged(volume: Float) {
+                        super.onVolumeChanged(volume)
+                        updateMusicInfo()
+                    }
                 })
             }, MoreExecutors.directExecutor()
         )
@@ -99,6 +104,10 @@ internal class MediaSessionRepositoryImpl @Inject constructor(
         }
     }
 
+    override fun changeVolume(volume: Float) {
+        mediaController?.volume = volume
+    }
+
     private fun updateMusicInfo() {
         val controller = mediaController ?: return
         val mediaMetadata = controller.mediaMetadata
@@ -114,8 +123,10 @@ internal class MediaSessionRepositoryImpl @Inject constructor(
             hasPrev = controller.hasPreviousMediaItem(),
             hasNext = controller.hasNextMediaItem(),
             isRepeated = controller.repeatMode == Player.REPEAT_MODE_ONE,
-            isShuffled = controller.shuffleModeEnabled
+            isShuffled = controller.shuffleModeEnabled,
+            volume = controller.volume
         )
+
         _nowPlayingMusicInfo.update { musicInfo }
     }
 }

@@ -28,7 +28,13 @@ internal fun TrackItem(
         modifier = modifier
             .fillMaxWidth()
             .heightIn(min = 48.dp)
-            .background(color = if (isSelected) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.background)
+            .background(
+                color = if (isSelected) {
+                    MaterialTheme.colorScheme.primaryContainer
+                } else {
+                    MaterialTheme.colorScheme.background
+                }
+            )
             .clickable { onClick(track.id) }
             .padding(horizontal = 16.dp),
         verticalAlignment = Alignment.CenterVertically
