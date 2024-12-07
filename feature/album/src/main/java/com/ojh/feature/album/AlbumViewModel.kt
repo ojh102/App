@@ -42,12 +42,9 @@ internal class AlbumViewModel @Inject constructor(
 
     fun onAction(action: AlbumAction) {
         when (action) {
-            is AlbumAction.ClickPlay -> clickPlay()
-            is AlbumAction.ClickRandomPlay -> {
-            }
-
-            is AlbumAction.ClickTrack -> {
-            }
+            is AlbumAction.ClickSequencePlay -> clickSequencePlay()
+            is AlbumAction.ClickRandomPlay -> clickRandomPlay()
+            is AlbumAction.ClickTrack -> clickTrack(action.trackId)
         }
     }
 
@@ -57,16 +54,32 @@ internal class AlbumViewModel @Inject constructor(
         }
     }
 
-    private fun clickPlay() {
-        viewModelScope.launch {
-            val firstTrackId = uiState.value.tracks.first().id
-            produceSideEffect(
-                AlbumSideEffect.StartMusicPlayService(
-                    albumId = albumId,
-                    trackId = firstTrackId
-                )
+    private fun clickSequencePlay() {
+        produceSideEffect(
+            AlbumSideEffect.StartMusicPlayService(
+                albumId = albumId,
+                isShuffled = false
             )
-        }
+        )
+    }
+
+    private fun clickRandomPlay() {
+        produceSideEffect(
+            AlbumSideEffect.StartMusicPlayService(
+                albumId = albumId,
+                isShuffled = true
+            )
+        )
+    }
+
+    private fun clickTrack(trackId: Long) {
+        produceSideEffect(
+            AlbumSideEffect.StartMusicPlayService(
+                albumId = albumId,
+                isShuffled = false,
+                selectedTrackId = trackId
+            )
+        )
     }
 
     companion object {

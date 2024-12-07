@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -19,7 +18,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ojh.core.model.Album
 import com.ojh.core.model.Track
-import com.ojh.feature.player.MusicPlayerService
+import com.ojh.core.media.MusicPlayerService
 
 @Composable
 fun AlbumRoute(modifier: Modifier = Modifier) {
@@ -38,7 +37,12 @@ private fun AlbumScreen(
         viewmodel.sideEffect.collect {
             when (it) {
                 is AlbumSideEffect.StartMusicPlayService -> {
-                    startMusicPlayService(context, it.albumId, it.trackId)
+                    startMusicPlayService(
+                        context = context,
+                        albumId = it.albumId,
+                        isShuffled = it.isShuffled,
+                        selectedTrackId = it.selectedTrackId
+                    )
                 }
             }
         }
@@ -51,8 +55,20 @@ private fun AlbumScreen(
     )
 }
 
-private fun startMusicPlayService(context: Context, albumId: Long, trackId: Long) {
-    context.startService(MusicPlayerService.startIntent(context, albumId, trackId))
+private fun startMusicPlayService(
+    context: Context,
+    albumId: Long,
+    isShuffled: Boolean,
+    selectedTrackId: Long?,
+) {
+    context.startService(
+        com.ojh.core.media.MusicPlayerService.startIntent(
+            context = context,
+            albumId = albumId,
+            isShuffled = isShuffled,
+            selectedTrackId = selectedTrackId
+        )
+    )
 }
 
 @Composable
@@ -64,7 +80,7 @@ private fun AlbumContent(
     Column(modifier.fillMaxSize()) {
         AlbumInfoLayout(uiState.album)
         AlbumPlayLayout(
-            onClickPlay = { onAction(AlbumAction.ClickPlay) },
+            onClickSequencePlay = { onAction(AlbumAction.ClickSequencePlay) },
             onClickRandomPlay = { onAction(AlbumAction.ClickRandomPlay) }
         )
         LazyColumn(

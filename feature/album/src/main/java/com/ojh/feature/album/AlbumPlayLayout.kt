@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -18,18 +18,18 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 internal fun AlbumPlayLayout(
-    onClickPlay: () -> Unit,
+    onClickSequencePlay: () -> Unit,
     onClickRandomPlay: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(modifier = modifier.fillMaxWidth()) {
         IconButton(
-            onClick = onClickPlay,
+            onClick = onClickSequencePlay,
             modifier = Modifier
                 .weight(1f)
                 .background(color = MaterialTheme.colorScheme.primary)
         ) {
-            Icon(imageVector = Icons.Filled.PlayArrow, contentDescription = null)
+            Icon(imageVector = Icons.Filled.KeyboardArrowDown, contentDescription = null)
         }
 
         Spacer(modifier = Modifier.width(16.dp))
@@ -48,5 +48,5 @@ internal fun AlbumPlayLayout(
 @Preview
 @Composable
 private fun AlbumPlayLayoutPreview() {
-    AlbumPlayLayout(onClickPlay = {}, onClickRandomPlay = {})
+    AlbumPlayLayout(onClickSequencePlay = {}, onClickRandomPlay = {})
 }

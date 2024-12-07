@@ -15,6 +15,10 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
+    
+    buildFeatures {
+        buildConfig = true
+    }
 
     buildTypes {
         debug {
@@ -39,4 +43,5 @@ dependencies {
     implementation(project(":feature:library"))
     implementation(project(":feature:album"))
     implementation(project(":feature:player"))
+    implementation(libs.timber)
 }

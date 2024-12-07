@@ -4,10 +4,13 @@ plugins {
 }
 
 android {
-    namespace = "com.ojh.core.data"
+    namespace = "com.ojh.core.media"
 }
 
 dependencies {
     implementation(project(":core:common"))
     implementation(project(":core:model"))
+    implementation(project(":core:data"))
+    implementation(libs.timber)
+    implementation(libs.bundles.media3)
 }

@@ -7,8 +7,10 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:compose"))
     implementation(project(":core:data"))
     implementation(project(":core:model"))
-    implementation(libs.timber)
+    implementation(project(":core:media"))
+    implementation(libs.bundles.coil)
     implementation(libs.bundles.media3)
 }

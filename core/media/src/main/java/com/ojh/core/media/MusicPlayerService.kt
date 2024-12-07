@@ -1,21 +1,14 @@
-package com.ojh.feature.player
+package com.ojh.core.media
 
 import android.app.Notification
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.NotificationManager.IMPORTANCE_HIGH
 import android.content.Context
 import android.content.Intent
-import android.content.pm.ServiceInfo
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import androidx.annotation.OptIn
 import androidx.core.app.NotificationCompat
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
-import androidx.media3.common.Player
-import androidx.media3.common.Tracks
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.session.CommandButton
@@ -24,9 +17,13 @@ import androidx.media3.session.MediaSession
 import androidx.media3.session.MediaSessionService
 import androidx.media3.session.MediaStyleNotificationHelper
 import com.google.common.collect.ImmutableList
-import com.google.common.util.concurrent.ListenableFuture
+import com.ojh.core.common.AppDispatchers
+import com.ojh.core.common.AppScope
+import com.ojh.core.common.Dispatcher
 import com.ojh.core.data.MusicRepository
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -35,13 +32,16 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class MusicPlayerService : MediaSessionService() {
-
-    private val notificationManager by lazy {
-        getSystemService(NotificationManager::class.java)
-    }
-
     @Inject
     lateinit var musicRepository: MusicRepository
+
+    @Inject
+    @AppScope
+    lateinit var appScope: CoroutineScope
+
+    @Inject
+    @Dispatcher(AppDispatchers.MAIN)
+    lateinit var mainDispatcher: CoroutineDispatcher
 
     private var mediaSession: MediaSession? = null
 
@@ -52,9 +52,7 @@ class MusicPlayerService : MediaSessionService() {
     @OptIn(UnstableApi::class)
     override fun onCreate() {
         super.onCreate()
-        createNotificationChannel()
-        createMediaSession()
-
+        initMediaSession()
         setMediaNotificationProvider(object : MediaNotification.Provider {
             override fun createNotification(
                 mediaSession: MediaSession,
@@ -98,7 +96,9 @@ class MusicPlayerService : MediaSessionService() {
             when (intent.action) {
                 START_MUSIC_ACTION -> {
                     val albumId = intent.getLongExtra(ALBUM_ID, -1L)
-                    initPlayer(albumId)
+                    val isShuffled = intent.getBooleanExtra(IS_SHUFFLED, false)
+                    val selectedTrackId = intent.getLongExtra(SELECTED_TRACK_ID, -1L)
+                    initPlayer(albumId, isShuffled, selectedTrackId)
                 }
             }
         }
@@ -106,45 +106,10 @@ class MusicPlayerService : MediaSessionService() {
         return START_STICKY
     }
 
-    private fun createMediaSession(): MediaSession {
-        val player = ExoPlayer.Builder(this)
-            .build()
-        player.addListener(object : Player.Listener {
-            override fun onPlaybackStateChanged(playbackState: Int) {
-                super.onPlaybackStateChanged(playbackState)
-                initNotification()
-            }
-
-            override fun onTracksChanged(tracks: Tracks) {
-                super.onTracksChanged(tracks)
-                initNotification()
-            }
-
-            override fun onPlayWhenReadyChanged(playWhenReady: Boolean, reason: Int) {
-                super.onPlayWhenReadyChanged(playWhenReady, reason)
-                initNotification()
-            }
-        })
+    private fun initMediaSession(): MediaSession {
+        val player = ExoPlayer.Builder(this).build()
         return MediaSession.Builder(this, player)
-            .setId("MusicPlayer" + System.currentTimeMillis())
-            .setCallback(object : MediaSession.Callback {
-                @OptIn(UnstableApi::class)
-                override fun onSetMediaItems(
-                    mediaSession: MediaSession,
-                    controller: MediaSession.ControllerInfo,
-                    mediaItems: MutableList<MediaItem>,
-                    startIndex: Int,
-                    startPositionMs: Long
-                ): ListenableFuture<MediaSession.MediaItemsWithStartPosition> {
-                    return super.onSetMediaItems(
-                        mediaSession,
-                        controller,
-                        mediaItems,
-                        startIndex,
-                        startPositionMs
-                    )
-                }
-            })
+            .setId("MusicPlayer")
             .build()
             .also { mediaSession = it }
     }
@@ -158,46 +123,20 @@ class MusicPlayerService : MediaSessionService() {
             .build()
     }
 
-    @OptIn(UnstableApi::class)
-    private fun initNotification() {
-        val notification = createNotification(mediaSession!!)
-        notificationManager.notify(NOTIFICATION_ID, notification)
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            startForeground(
-                NOTIFICATION_ID,
-                notification,
-                ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK
-            )
-        } else {
-            startForeground(
-                NOTIFICATION_ID,
-                notification
-            )
-        }
-    }
-
-    private fun createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(
-                CHANNEL_ID,
-                CHANNEL_NAME,
-                IMPORTANCE_HIGH
-            ).apply {
-                setShowBadge(false)
+    private fun initPlayer(albumId: Long, isShuffled: Boolean, selectedTrackId: Long) {
+        appScope.launch {
+            val tracks = musicRepository.getTracks(albumId).run {
+                if (isShuffled) {
+                    shuffled()
+                } else {
+                    this
+                }
             }
-            notificationManager.createNotificationChannel(channel)
-        }
-    }
 
+            val selectedTrackIndex =
+                selectedTrackId.takeIf { it != -1L }
+                    ?.let { tracks.indexOfFirst { track -> track.id == it } } ?: 0
 
-    private fun initPlayer(albumId: Long) {
-        playTracks(albumId)
-    }
-
-    private fun playTracks(albumId: Long) {
-        GlobalScope.launch {
-            val tracks = musicRepository.getTracks(albumId)
             val albumArtUri = musicRepository.getAlbumById(albumId)?.albumArtUri.orEmpty()
             val player = mediaSession?.player ?: return@launch
             val mediaItems = tracks.map { track ->
@@ -213,8 +152,9 @@ class MusicPlayerService : MediaSessionService() {
                     )
                     .build()
             }
-            withContext(Dispatchers.Main) {
+            withContext(mainDispatcher) {
                 player.setMediaItems(mediaItems)
+                player.seekTo(selectedTrackIndex, 0)
                 player.prepare()
                 player.play()
             }
@@ -223,26 +163,26 @@ class MusicPlayerService : MediaSessionService() {
 
     companion object {
         private const val CHANNEL_ID = "channel_id::music"
-        private const val CHANNEL_NAME = "Music"
 
         private const val ALBUM_ID = "album_id"
-        private const val START_TRACK_ID = "start_track_id"
+        private const val IS_SHUFFLED = "is_shuffled"
+        private const val SELECTED_TRACK_ID = "selected_track_id"
 
         private const val NOTIFICATION_ID = 1234
 
         private const val START_MUSIC_ACTION = "com.ojh.feature.player.action.START_MUSIC"
 
-        fun startIntent(context: Context, albumId: Long, startTrackId: Long): Intent {
+        fun startIntent(
+            context: Context,
+            albumId: Long,
+            isShuffled: Boolean,
+            selectedTrackId: Long?,
+        ): Intent {
             return Intent(context, MusicPlayerService::class.java)
                 .setAction(START_MUSIC_ACTION)
                 .putExtra(ALBUM_ID, albumId)
-                .putExtra(START_TRACK_ID, startTrackId)
-        }
-
-        fun startPlayer(context: Context, albumId: Long): Intent {
-            return Intent(context, MusicPlayerService::class.java)
-                .setAction(START_MUSIC_ACTION)
-                .putExtra(ALBUM_ID, albumId)
+                .putExtra(IS_SHUFFLED, isShuffled)
+                .putExtra(SELECTED_TRACK_ID, selectedTrackId)
         }
     }
 }

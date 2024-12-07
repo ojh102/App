@@ -1,30 +1,37 @@
 package com.ojh.app
 
-import androidx.compose.foundation.background
+import android.annotation.SuppressLint
+import android.content.Context
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.CutCornerShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.ojh.feature.player.PlayerScreen
+import com.ojh.feature.player.PlayerBottomSheet
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -53,6 +60,7 @@ internal fun AppBar(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun App(
     navController: NavHostController = rememberNavController()
@@ -61,7 +69,19 @@ internal fun App(
     val currentDestination = currentBackStack?.destination
     val currentScreen =
         appScreens.find { it.route == currentDestination?.route } ?: AppDestination.Album
-    Scaffold(
+
+    val scaffoldState = rememberBottomSheetScaffoldState()
+
+    BottomSheetScaffold(
+        scaffoldState = scaffoldState,
+        sheetContent = {
+            PlayerBottomSheet(scaffoldState)
+        },
+        sheetShape = RectangleShape,
+        sheetPeekHeight = 80.dp + WindowInsets.navigationBars.asPaddingValues()
+            .calculateBottomPadding(),
+        sheetDragHandle = { },
+        sheetSwipeEnabled = false,
         topBar = {
             AppBar(
                 currentScreen = currentScreen,
@@ -77,12 +97,15 @@ internal fun App(
                 .padding(innerPadding)
         ) {
             AppNavHost(navController, modifier = Modifier.weight(1f))
-            PlayerScreen(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(80.dp)
-                    .background(Color.Blue)
-            )
         }
     }
 }
+
+
+val Context.navigationBarHeight: Int
+    @SuppressLint("InternalInsetResource", "DiscouragedApi")
+    get() = resources.getIdentifier(
+        "navigation_bar_height",
+        "dimen",
+        "android"
+    ).takeIf { it > 0 }?.let { resources.getDimensionPixelSize(it) } ?: 0

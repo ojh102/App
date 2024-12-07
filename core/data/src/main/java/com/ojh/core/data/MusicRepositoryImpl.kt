@@ -8,10 +8,12 @@ import android.net.Uri
 import android.os.Handler
 import android.os.Looper
 import android.provider.MediaStore
+import com.ojh.core.common.AppDispatchers
+import com.ojh.core.common.Dispatcher
 import com.ojh.core.model.Album
 import com.ojh.core.model.Track
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -19,9 +21,9 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 internal class MusicRepositoryImpl @Inject constructor(
-    @ApplicationContext private val context: Context
+    @ApplicationContext private val context: Context,
+    @Dispatcher(AppDispatchers.IO) private val ioDispatcher: CoroutineDispatcher
 ) : MusicRepository {
-
     override fun observeAlbums(): Flow<List<Album>> = callbackFlow {
         val contentResolver = context.contentResolver
         val uri = MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI
@@ -56,13 +58,15 @@ internal class MusicRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getAlbumById(albumId: Long): Album? {
-        return withContext(Dispatchers.IO) {
+        return withContext(ioDispatcher) {
             getAlbumById(context, albumId)
         }
     }
 
     override suspend fun getTracks(albumId: Long): List<Track> {
-        return withContext(Dispatchers.IO) { getTracksByAlbumId(albumId) }
+        return withContext(ioDispatcher) {
+            getTracksByAlbumId(albumId)
+        }
     }
 
     private fun getAlbumList(context: Context): List<Album> {
