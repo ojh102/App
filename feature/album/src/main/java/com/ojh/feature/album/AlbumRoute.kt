@@ -16,9 +16,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.ojh.core.media.MusicPlayerService
 import com.ojh.core.model.Album
 import com.ojh.core.model.Track
-import com.ojh.core.media.MusicPlayerService
 
 @Composable
 fun AlbumRoute(modifier: Modifier = Modifier) {
@@ -62,7 +62,7 @@ private fun startMusicPlayService(
     selectedTrackId: Long?,
 ) {
     context.startService(
-        com.ojh.core.media.MusicPlayerService.startIntent(
+        MusicPlayerService.startIntent(
             context = context,
             albumId = albumId,
             isShuffled = isShuffled,
@@ -91,6 +91,7 @@ private fun AlbumContent(
                 TrackItem(
                     track = track,
                     index = index,
+                    isSelected = track.id == uiState.nowPlayingMusicInfo.id,
                     onClick = { trackId ->
                         onAction(AlbumAction.ClickTrack(trackId = trackId))
                     }

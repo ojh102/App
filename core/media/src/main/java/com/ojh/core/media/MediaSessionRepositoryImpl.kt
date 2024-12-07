@@ -104,6 +104,7 @@ internal class MediaSessionRepositoryImpl @Inject constructor(
         val mediaMetadata = controller.mediaMetadata
 
         val musicInfo = MusicInfo(
+            id = controller.currentMediaItem?.mediaId?.toLong() ?: 0L,
             title = mediaMetadata.title.toString(),
             artist = mediaMetadata.artist.toString(),
             artworkUri = mediaMetadata.artworkUri.toString(),

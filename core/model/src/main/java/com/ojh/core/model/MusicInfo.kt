@@ -1,6 +1,7 @@
 package com.ojh.core.model
 
 data class MusicInfo(
+    val id: Long = 0,
     val title: String? = null,
     val artist: String? = null,
     val artworkUri: String? = null,
