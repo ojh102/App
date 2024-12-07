@@ -6,7 +6,7 @@ data class MusicInfo(
     val artist: String? = null,
     val artworkUri: String? = null,
     val currentPosition: Long = 0,
-    val contentPosition: Long = 0,
+    val duration: Long = 1,
     val isPlaying: Boolean = false,
     val hasPrev: Boolean = false,
     val hasNext: Boolean = false,

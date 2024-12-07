@@ -7,15 +7,26 @@ import androidx.media3.common.Player
 import androidx.media3.session.MediaController
 import androidx.media3.session.SessionToken
 import com.google.common.util.concurrent.MoreExecutors
+import com.ojh.core.common.AppDispatchers
+import com.ojh.core.common.AppScope
+import com.ojh.core.common.Dispatcher
 import com.ojh.core.model.MusicInfo
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 internal class MediaSessionRepositoryImpl @Inject constructor(
-    @ApplicationContext context: Context
+    @ApplicationContext context: Context,
+    @AppScope private val appScope: CoroutineScope,
+    @Dispatcher(AppDispatchers.MAIN) mainDispatcher: CoroutineDispatcher,
+    @Dispatcher(AppDispatchers.IO) ioDispatcher: CoroutineDispatcher
 ) : MediaSessionRepository {
 
     private val _nowPlayingMusicInfo = MutableStateFlow(MusicInfo())
@@ -61,6 +72,17 @@ internal class MediaSessionRepositoryImpl @Inject constructor(
                 })
             }, MoreExecutors.directExecutor()
         )
+
+        appScope.launch {
+            while (true) {
+                delay(500)
+                withContext(mainDispatcher) {
+                    if (mediaController?.isPlaying == true) {
+                        updateMusicInfo()
+                    }
+                }
+            }
+        }
     }
 
     override fun observeNowPlayingMusicInfo(): Flow<MusicInfo> {
@@ -108,17 +130,22 @@ internal class MediaSessionRepositoryImpl @Inject constructor(
         mediaController?.volume = volume
     }
 
+    override fun changeProgress(progress: Float) {
+        val duration = mediaController?.duration ?: return
+        mediaController?.seekTo((duration * progress).toLong())
+    }
+
     private fun updateMusicInfo() {
         val controller = mediaController ?: return
         val mediaMetadata = controller.mediaMetadata
 
         val musicInfo = MusicInfo(
             id = controller.currentMediaItem?.mediaId?.toLong() ?: 0L,
-            title = mediaMetadata.title.toString(),
-            artist = mediaMetadata.artist.toString(),
-            artworkUri = mediaMetadata.artworkUri.toString(),
+            title = mediaMetadata.title?.toString(),
+            artist = mediaMetadata.artist?.toString(),
+            artworkUri = mediaMetadata.artworkUri?.toString(),
             currentPosition = controller.currentPosition,
-            contentPosition = controller.contentPosition,
+            duration = controller.duration,
             isPlaying = controller.isPlaying,
             hasPrev = controller.hasPreviousMediaItem(),
             hasNext = controller.hasNextMediaItem(),

@@ -1,16 +1,11 @@
 package com.ojh.app
 
-import android.annotation.SuppressLint
-import android.content.Context
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBars
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.CutCornerShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.BottomSheetScaffold
@@ -26,7 +21,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -100,12 +94,3 @@ internal fun App(
         }
     }
 }
-
-
-val Context.navigationBarHeight: Int
-    @SuppressLint("InternalInsetResource", "DiscouragedApi")
-    get() = resources.getIdentifier(
-        "navigation_bar_height",
-        "dimen",
-        "android"
-    ).takeIf { it > 0 }?.let { resources.getDimensionPixelSize(it) } ?: 0
