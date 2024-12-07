@@ -142,7 +142,8 @@ internal class MusicRepositoryImpl @Inject constructor(
     }
 
     private fun getTracksByAlbumId(albumId: Long): List<Track> {
-        val trackList = mutableListOf<Track>()
+        val trackListWithTrackNumber = mutableListOf<Track>()
+        val trackListWithoutTrackNumber = mutableListOf<Track>()
         val contentResolver: ContentResolver = context.contentResolver
         val uri: Uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
 
@@ -151,7 +152,8 @@ internal class MusicRepositoryImpl @Inject constructor(
             MediaStore.Audio.Media.TITLE,
             MediaStore.Audio.Media.ARTIST,
             MediaStore.Audio.Media.DURATION,
-            MediaStore.Audio.Media.DATA
+            MediaStore.Audio.Media.DATA,
+            MediaStore.Audio.Media.TRACK
         )
 
 
@@ -171,19 +173,25 @@ internal class MusicRepositoryImpl @Inject constructor(
             val titleColumn = it.getColumnIndex(MediaStore.Audio.Media.TITLE)
             val artistColumn = it.getColumnIndex(MediaStore.Audio.Media.ARTIST)
             val dataColumn = it.getColumnIndex(MediaStore.Audio.Media.DATA)
+            val trackColumn = it.getColumnIndex(MediaStore.Audio.Media.TRACK)
 
-            var order = 0
             while (it.moveToNext()) {
                 val id = it.getLong(idColumn)
                 val title = it.getString(titleColumn)
                 val artist = it.getString(artistColumn)
                 val data = it.getString(dataColumn)
+                val trackNumber = it.getInt(trackColumn).takeIf { it > 0 }
 
-                trackList.add(Track(id, order++, title, artist, data))
+                if (trackNumber != null) {
+                    trackListWithTrackNumber.add(Track(id, trackNumber, title, artist, data))
+                } else {
+                    trackListWithoutTrackNumber.add(Track(id, null, title, artist, data))
+                }
             }
         }
-
-        return trackList
+        val sortedTrackList =
+            trackListWithTrackNumber.sortedBy { it.trackNumber } + trackListWithoutTrackNumber
+        return sortedTrackList
     }
 
     companion object {

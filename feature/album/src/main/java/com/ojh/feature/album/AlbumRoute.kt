@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -51,9 +52,10 @@ private fun AlbumContent(
             modifier = Modifier.fillMaxWidth(),
             verticalArrangement = Arrangement.spacedBy(1.dp)
         ) {
-            items(items = uiState.tracks, key = { it.id }) {
+            itemsIndexed(items = uiState.tracks, key = { _, track -> track.id }) { index, track ->
                 TrackItem(
-                    track = it,
+                    track = track,
+                    index = index,
                     onClick = { trackId ->
                         onAction(AlbumAction.ClickTrack(trackId = trackId))
                     }
@@ -69,7 +71,13 @@ private fun AlbumContentPreview() {
     AlbumContent(
         uiState = AlbumUiState(
             tracks = (0..10).map {
-                Track(id = it.toLong(), order = it, title = "타이틀$it", artist = "아티스트$it", data = "")
+                Track(
+                    id = it.toLong(),
+                    trackNumber = it,
+                    title = "타이틀$it",
+                    artist = "아티스트$it",
+                    data = ""
+                )
             },
             album = Album(id = 0, name = "앨범0", artist = "아티스트0", albumArtUri = "")
         ),

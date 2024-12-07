@@ -19,6 +19,7 @@ import com.ojh.core.model.Track
 @Composable
 internal fun TrackItem(
     track: Track,
+    index: Int,
     onClick: (Long) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -32,7 +33,7 @@ internal fun TrackItem(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = (track.order + 1).toString(),
+            text = (index + 1).toString(),
             style = MaterialTheme.typography.labelMedium
         )
         Text(
@@ -50,11 +51,12 @@ private fun TrackItemPreview() {
         TrackItem(
             track = Track(
                 id = 0,
-                order = 0,
+                trackNumber = 0,
                 title = "타이틀",
                 artist = "아티스트",
                 data = ""
             ),
+            index = 0,
             onClick = {}
         )
     }
