@@ -11,9 +11,11 @@ import android.provider.MediaStore
 import com.ojh.core.model.Album
 import com.ojh.core.model.Track
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 internal class MusicRepositoryImpl @Inject constructor(
@@ -53,6 +55,12 @@ internal class MusicRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun getAlbumById(albumId: Long): Album? {
+        return withContext(Dispatchers.IO) {
+            getAlbumById(context, albumId)
+        }
+    }
+
     private fun getAlbumList(context: Context): List<Album> {
         val albumList = mutableListOf<Album>()
         val contentResolver: ContentResolver = context.contentResolver
@@ -69,7 +77,7 @@ internal class MusicRepositoryImpl @Inject constructor(
             projection,
             null,
             null,
-            MediaStore.Audio.Albums.ALBUM // 앨범명 기준 정렬
+            MediaStore.Audio.Albums.ALBUM
         )
 
         cursor?.use {
@@ -92,6 +100,46 @@ internal class MusicRepositoryImpl @Inject constructor(
         return albumList
     }
 
+    private fun getAlbumById(context: Context, albumId: Long): Album? {
+        val contentResolver: ContentResolver = context.contentResolver
+        val uri = MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI
+
+        val projection = arrayOf(
+            MediaStore.Audio.Albums._ID,
+            MediaStore.Audio.Albums.ALBUM,
+            MediaStore.Audio.Albums.ARTIST
+        )
+
+        val selection = "${MediaStore.Audio.Albums._ID} = ?"
+        val selectionArgs = arrayOf(albumId.toString())
+
+        val cursor = contentResolver.query(
+            uri,
+            projection,
+            selection,
+            selectionArgs,
+            null
+        )
+
+        cursor?.use {
+            val idColumn = it.getColumnIndex(MediaStore.Audio.Albums._ID)
+            val albumColumn = it.getColumnIndex(MediaStore.Audio.Albums.ALBUM)
+            val artistColumn = it.getColumnIndex(MediaStore.Audio.Albums.ARTIST)
+
+            if (it.moveToFirst()) {
+                val id = it.getLong(idColumn)
+                val name = it.getString(albumColumn)
+                val artist = it.getString(artistColumn)
+                val albumArtUri = ContentUris.withAppendedId(
+                    Uri.parse(ALBUM_ART_URI), id
+                ).toString()
+
+                return Album(id, name, artist, albumArtUri)
+            }
+        }
+
+        return null
+    }
 
     private fun getTracksByAlbumId(albumId: Long): List<Track> {
         val trackList = mutableListOf<Track>()

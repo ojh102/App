@@ -1,0 +1,64 @@
+package com.ojh.app
+
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import com.ojh.feature.album.AlbumRoute
+import com.ojh.feature.library.LibraryRoute
+
+@Composable
+internal fun AppNavHost(
+    navController: NavHostController,
+    modifier: Modifier = Modifier
+) {
+    NavHost(
+        navController = navController,
+        startDestination = AppDestination.Library.route,
+        modifier = modifier
+    ) {
+        composable(route = AppDestination.Library.route) {
+            LibraryRoute(
+                modifier = Modifier
+                    .fillMaxSize(),
+                onNavigateToAlbum = {
+                    navController.navigateToAlbum(it)
+                }
+            )
+        }
+        composable(
+            route = AppDestination.Album.routeWithArgs,
+            arguments = AppDestination.Album.arguments,
+            deepLinks = AppDestination.Album.deepLinks
+        ) {
+            AlbumRoute(
+                modifier = Modifier
+                    .fillMaxSize()
+            )
+        }
+    }
+}
+
+fun NavHostController.navigateSingleTopTo(route: String) =
+    this.navigate(route) {
+        // Pop up to the start destination of the graph to
+        // avoid building up a large stack of destinations
+        // on the back stack as users select items
+        popUpTo(
+            this@navigateSingleTopTo.graph.findStartDestination().id
+        ) {
+            saveState = true
+        }
+        // Avoid multiple copies of the same destination when
+        // reselecting the same item
+        launchSingleTop = true
+        // Restore state when reselecting a previously selected item
+        restoreState = true
+    }
+
+private fun NavHostController.navigateToAlbum(albumId: Long) {
+    this.navigateSingleTopTo("${AppDestination.Album.route}/$albumId")
+}

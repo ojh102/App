@@ -30,7 +30,7 @@ internal fun AlbumInfoLayout(album: Album?, modifier: Modifier = Modifier) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         if (album == null) {
-            CircularProgressIndicator(modifier = Modifier.fillMaxWidth())
+            CircularProgressIndicator()
         } else {
             AsyncImage(
                 model = album.albumArtUri,

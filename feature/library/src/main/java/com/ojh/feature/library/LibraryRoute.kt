@@ -31,7 +31,7 @@ import timber.log.Timber
 @Composable
 fun LibraryRoute(
     modifier: Modifier = Modifier,
-    onNavigateToAlbum: () -> Unit
+    onNavigateToAlbum: (Long) -> Unit
 ) {
     LibraryScreen(modifier = modifier, onNavigateToAlbum = onNavigateToAlbum)
 }
@@ -40,7 +40,7 @@ fun LibraryRoute(
 private fun LibraryScreen(
     modifier: Modifier = Modifier,
     viewModel: LibraryViewModel = hiltViewModel(),
-    onNavigateToAlbum: () -> Unit
+    onNavigateToAlbum: (Long) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -63,7 +63,7 @@ private fun LibraryScreen(
                 }
 
                 is LibrarySideEffect.NavigateToAlbum -> {
-                    onNavigateToAlbum()
+                    onNavigateToAlbum(it.albumId)
                 }
             }
         }
