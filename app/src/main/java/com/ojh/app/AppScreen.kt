@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.ojh.feature.library.PlayerScreen
+import com.ojh.feature.player.PlayerScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

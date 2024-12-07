@@ -1,5 +1,6 @@
 package com.ojh.feature.album
 
+import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -8,14 +9,17 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ojh.core.model.Album
 import com.ojh.core.model.Track
+import com.ojh.feature.player.MusicPlayerService
 
 @Composable
 fun AlbumRoute(modifier: Modifier = Modifier) {
@@ -28,12 +32,27 @@ private fun AlbumScreen(
     viewmodel: AlbumViewModel = hiltViewModel()
 ) {
     val uiState by viewmodel.uiState.collectAsStateWithLifecycle()
+    val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        viewmodel.sideEffect.collect {
+            when (it) {
+                is AlbumSideEffect.StartMusicPlayService -> {
+                    startMusicPlayService(context, it.albumId, it.trackId)
+                }
+            }
+        }
+    }
 
     AlbumContent(
         uiState = uiState,
         onAction = viewmodel::onAction,
         modifier = modifier
     )
+}
+
+private fun startMusicPlayService(context: Context, albumId: Long, trackId: Long) {
+    context.startService(MusicPlayerService.startIntent(context, albumId, trackId))
 }
 
 @Composable

@@ -8,4 +8,5 @@ interface MusicRepository {
     fun observeAlbums(): Flow<List<Album>>
     fun observeTracksByAlbumId(albumId: Long): Flow<List<Track>>
     suspend fun getAlbumById(albumId: Long): Album?
+    suspend fun getTracks(albumId: Long): List<Track>
 }

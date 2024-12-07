@@ -1,4 +1,4 @@
-package com.ojh.feature.library
+package com.ojh.feature.player
 
 import androidx.compose.runtime.Immutable
 import com.ojh.core.model.Album

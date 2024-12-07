@@ -61,6 +61,10 @@ internal class MusicRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun getTracks(albumId: Long): List<Track> {
+        return withContext(Dispatchers.IO) { getTracksByAlbumId(albumId) }
+    }
+
     private fun getAlbumList(context: Context): List<Album> {
         val albumList = mutableListOf<Album>()
         val contentResolver: ContentResolver = context.contentResolver

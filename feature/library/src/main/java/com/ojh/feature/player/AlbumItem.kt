@@ -1,4 +1,4 @@
-package com.ojh.feature.library
+package com.ojh.feature.player
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

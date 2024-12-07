@@ -8,7 +8,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.ojh.feature.album.AlbumRoute
-import com.ojh.feature.library.LibraryRoute
+import com.ojh.feature.player.LibraryRoute
 
 @Composable
 internal fun AppNavHost(
