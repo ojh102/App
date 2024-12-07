@@ -105,7 +105,6 @@ internal fun App(
                     AlbumRoute(
                         modifier = Modifier
                             .fillMaxSize()
-                            .background(Color.Green)
                     )
                 }
             }

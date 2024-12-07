@@ -9,6 +9,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -98,7 +99,8 @@ private fun LibraryContent(
                 items(items = uiState.albums, key = { it.id }) {
                     AlbumItem(
                         album = it,
-                        onClick = { albumId -> onAction(LibraryAction.ClickAlbum(albumId)) }
+                        onClick = { albumId -> onAction(LibraryAction.ClickAlbum(albumId)) },
+                        modifier = Modifier.fillMaxWidth()
                     )
                 }
             }

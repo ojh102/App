@@ -122,17 +122,16 @@ internal class MusicRepositoryImpl @Inject constructor(
             val idColumn = it.getColumnIndex(MediaStore.Audio.Media._ID)
             val titleColumn = it.getColumnIndex(MediaStore.Audio.Media.TITLE)
             val artistColumn = it.getColumnIndex(MediaStore.Audio.Media.ARTIST)
-            val durationColumn = it.getColumnIndex(MediaStore.Audio.Media.DURATION)
             val dataColumn = it.getColumnIndex(MediaStore.Audio.Media.DATA)
 
+            var order = 0
             while (it.moveToNext()) {
                 val id = it.getLong(idColumn)
                 val title = it.getString(titleColumn)
                 val artist = it.getString(artistColumn)
-                val duration = it.getLong(durationColumn)
                 val data = it.getString(dataColumn)
 
-                trackList.add(Track(id, title, artist, duration, data))
+                trackList.add(Track(id, order++, title, artist, data))
             }
         }
 
