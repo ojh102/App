@@ -1,8 +1,8 @@
 package com.ojh.feature.player
 
 internal sealed interface PlayerAction {
-    data object ClickPlayOrPause : PlayerAction
-    data object ClickPlayer : PlayerAction
+    data object TogglePlay : PlayerAction
+    data object ToggleExpand : PlayerAction
     data object ClickBack : PlayerAction
     data object ClickNext : PlayerAction
     data object ClickPrev : PlayerAction

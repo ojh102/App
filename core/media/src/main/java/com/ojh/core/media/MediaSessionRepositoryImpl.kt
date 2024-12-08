@@ -89,7 +89,7 @@ internal class MediaSessionRepositoryImpl @Inject constructor(
         return _nowPlayingNowPlayingInfo
     }
 
-    override fun playOrPause() {
+    override fun togglePlay() {
         val controller = mediaController ?: return
         if (!controller.isPlaying && !controller.currentTracks.isEmpty) {
             controller.play()

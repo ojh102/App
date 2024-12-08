@@ -77,20 +77,20 @@ private fun PlayerContent(
                     nowPlayingInfo = uiState.nowPlayingInfo,
                     onClickRepeat = { onAction(PlayerAction.ClickRepeat) },
                     onClickPrev = { onAction(PlayerAction.ClickPrev) },
-                    onClickPlayOrPause = { onAction(PlayerAction.ClickPlayOrPause) },
+                    onTogglePlay = { onAction(PlayerAction.TogglePlay) },
                     onClickNext = { onAction(PlayerAction.ClickNext) },
                     onClickShuffle = { onAction(PlayerAction.ClickShuffle) },
                     onChangeVolume = { onAction(PlayerAction.ChangeVolume(it)) },
                     onChangeProgress = { onAction(PlayerAction.ChangeProgress(it)) },
-                    modifier = Modifier.clickable { onAction(PlayerAction.ClickPlayer) }
+                    modifier = Modifier.clickable { onAction(PlayerAction.ToggleExpand) }
                 )
             }
 
             !uiState.isExpanded -> {
                 CollapsedPlayerLayout(
                     nowPlayingInfo = uiState.nowPlayingInfo,
-                    onClickPlayOrPause = { onAction(PlayerAction.ClickPlayOrPause) },
-                    modifier = Modifier.clickable { onAction(PlayerAction.ClickPlayer) }
+                    onTogglePlay = { onAction(PlayerAction.TogglePlay) },
+                    modifier = Modifier.clickable { onAction(PlayerAction.ToggleExpand) }
                 )
             }
         }

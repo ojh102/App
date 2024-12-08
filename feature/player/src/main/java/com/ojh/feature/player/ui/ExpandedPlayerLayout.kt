@@ -29,7 +29,6 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.ojh.core.compose.theme.AppTheme
 import com.ojh.core.model.NowPlayingInfo
-import com.ojh.feature.player.PlayerUiState
 import com.ojh.feature.player.ui.model.NowPlayingInfoUiModel
 import com.ojh.feature.player.ui.model.toUiModel
 
@@ -38,7 +37,7 @@ internal fun ExpandedPlayerLayout(
     nowPlayingInfo: NowPlayingInfoUiModel,
     onClickRepeat: () -> Unit,
     onClickPrev: () -> Unit,
-    onClickPlayOrPause: () -> Unit,
+    onTogglePlay: () -> Unit,
     onClickNext: () -> Unit,
     onClickShuffle: () -> Unit,
     onChangeVolume: (Float) -> Unit,
@@ -68,7 +67,7 @@ internal fun ExpandedPlayerLayout(
             isShuffled = nowPlayingInfo.isShuffled,
             onClickRepeat = onClickRepeat,
             onClickPrev = onClickPrev,
-            onClickPlayOrPause = onClickPlayOrPause,
+            onTogglePlay = onTogglePlay,
             onClickNext = onClickNext,
             onClickShuffle = onClickShuffle
         )
@@ -123,7 +122,7 @@ private fun PlayerController(
     isShuffled: Boolean,
     onClickRepeat: () -> Unit,
     onClickPrev: () -> Unit,
-    onClickPlayOrPause: () -> Unit,
+    onTogglePlay: () -> Unit,
     onClickNext: () -> Unit,
     onClickShuffle: () -> Unit,
 ) {
@@ -149,7 +148,7 @@ private fun PlayerController(
             )
         }
 
-        IconButton(onClick = onClickPlayOrPause) {
+        IconButton(onClick = onTogglePlay) {
             if (isPlaying) {
                 Icon(
                     painter = painterResource(androidx.media3.session.R.drawable.media3_icon_pause),
@@ -243,7 +242,7 @@ private fun ExpandedPlayerLayoutPreview() {
             onClickNext = {},
             onClickShuffle = {},
             onClickPrev = {},
-            onClickPlayOrPause = {},
+            onTogglePlay = {},
             onChangeVolume = {},
             onChangeProgress = {}
         )

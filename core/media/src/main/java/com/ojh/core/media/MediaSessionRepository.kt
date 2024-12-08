@@ -4,7 +4,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface MediaSessionRepository {
     fun observeNowPlayingInfoState(): Flow<NowPlayingInfoState>
-    fun playOrPause()
+    fun togglePlay()
     fun next()
     fun prev()
     fun shuffle()

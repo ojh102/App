@@ -19,14 +19,13 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.ojh.core.compose.theme.AppTheme
 import com.ojh.core.model.NowPlayingInfo
-import com.ojh.feature.player.PlayerUiState
 import com.ojh.feature.player.ui.model.NowPlayingInfoUiModel
 import com.ojh.feature.player.ui.model.toUiModel
 
 @Composable
 internal fun CollapsedPlayerLayout(
     nowPlayingInfo: NowPlayingInfoUiModel,
-    onClickPlayOrPause: () -> Unit,
+    onTogglePlay: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -36,7 +35,7 @@ internal fun CollapsedPlayerLayout(
         verticalAlignment = Alignment.CenterVertically
     ) {
 
-        IconButton(onClick = onClickPlayOrPause) {
+        IconButton(onClick = onTogglePlay) {
             Icon(
                 painter = if (nowPlayingInfo.isPlaying) {
                     painterResource(androidx.media3.session.R.drawable.media3_icon_pause)
@@ -77,7 +76,7 @@ private fun CollapsedPlayerLayoutPreview() {
                 artworkUri = null,
                 isPlaying = true
             ).toUiModel(),
-            onClickPlayOrPause = {}
+            onTogglePlay = {}
         )
     }
 }
