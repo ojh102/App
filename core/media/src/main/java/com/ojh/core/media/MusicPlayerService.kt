@@ -4,6 +4,7 @@ import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.NotificationManager.IMPORTANCE_HIGH
+import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -53,6 +54,7 @@ class MusicPlayerService : MediaSessionService() {
         getSystemService(NotificationManager::class.java)
     }
 
+    private var albumId = -1L
 
     override fun onGetSession(controllerInfo: MediaSession.ControllerInfo): MediaSession? {
         return mediaSession
@@ -105,7 +107,7 @@ class MusicPlayerService : MediaSessionService() {
         if (intent != null) {
             when (intent.action) {
                 START_MUSIC_ACTION -> {
-                    val albumId = intent.getLongExtra(ALBUM_ID, -1L)
+                    val albumId = intent.getLongExtra(ALBUM_ID, -1L).also { this.albumId = it }
                     val isShuffled = intent.getBooleanExtra(IS_SHUFFLED, false)
                     val selectedTrackId = intent.getLongExtra(SELECTED_TRACK_ID, -1L)
                     initPlayer(albumId, isShuffled, selectedTrackId)
@@ -151,6 +153,21 @@ class MusicPlayerService : MediaSessionService() {
             .setSmallIcon(androidx.media3.session.R.drawable.media3_notification_small_icon)
             .setStyle(MediaStyleNotificationHelper.MediaStyle(mediaSession))
             .setSilent(true)
+            .apply {
+                if (albumId != -1L) {
+                    setContentIntent(
+                        PendingIntent.getActivity(
+                            this@MusicPlayerService,
+                            System.currentTimeMillis().toInt(),
+                            Intent.parseUri(
+                                ALBUM_DEEPLINK_PREFIX + albumId,
+                                Intent.URI_INTENT_SCHEME
+                            ),
+                            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+                        )
+                    )
+                }
+            }
             .build()
     }
 
@@ -203,6 +220,7 @@ class MusicPlayerService : MediaSessionService() {
         private const val NOTIFICATION_ID = 1234
 
         private const val START_MUSIC_ACTION = "com.ojh.feature.player.action.START_MUSIC"
+        private const val ALBUM_DEEPLINK_PREFIX = "ojh://album/"
 
         fun startIntent(
             context: Context,
