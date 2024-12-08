@@ -127,6 +127,7 @@ class MusicPlayerService : MediaSessionService() {
         return NotificationCompat.Builder(this, CHANNEL_ID)
             .setSmallIcon(androidx.media3.session.R.drawable.media3_notification_small_icon)
             .setStyle(MediaStyleNotificationHelper.MediaStyle(mediaSession))
+            .setSilent(true)
             .build()
     }
 
