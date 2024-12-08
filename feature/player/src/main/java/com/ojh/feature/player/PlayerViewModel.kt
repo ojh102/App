@@ -3,6 +3,8 @@ package com.ojh.feature.player
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ojh.core.media.MediaSessionRepository
+import com.ojh.core.media.NowPlayingInfoState
+import com.ojh.feature.player.ui.model.toUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,9 +28,15 @@ internal class PlayerViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            mediaSessionRepository.observeNowPlayingMusicInfo()
-                .collectLatest { musicInfo ->
-                    _uiState.update { it.copy(musicInfo = musicInfo) }
+            mediaSessionRepository.observeNowPlayingInfoState()
+                .collectLatest { nowPlayingInfo ->
+                    _uiState.update {
+                        it.copy(
+                            nowPlayingInfo = (nowPlayingInfo as? NowPlayingInfoState.Connected)
+                                ?.nowPlayingInfo
+                                ?.toUiModel()
+                        )
+                    }
                 }
         }
     }

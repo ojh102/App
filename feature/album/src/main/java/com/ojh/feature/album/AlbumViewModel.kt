@@ -5,6 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ojh.core.data.MusicRepository
 import com.ojh.core.media.MediaSessionRepository
+import com.ojh.core.media.NowPlayingInfoState
+import com.ojh.feature.album.ui.model.toUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -32,18 +34,27 @@ internal class AlbumViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            _uiState.update { it.copy(album = musicRepository.getAlbumById(albumId)) }
+            _uiState.update {
+                it.copy(album = musicRepository.getAlbumById(albumId)?.toUiModel())
+            }
         }
         viewModelScope.launch {
             musicRepository.observeTracksByAlbumId(albumId)
                 .collectLatest { tracks ->
-                    _uiState.update { it.copy(tracks = tracks) }
+                    val trackUiModels = tracks.mapIndexed { index, track -> track.toUiModel(index) }
+                    _uiState.update { it.copy(tracks = trackUiModels) }
                 }
         }
         viewModelScope.launch {
-            mediaSessionRepository.observeNowPlayingMusicInfo()
-                .collectLatest { nowPlayingMusicInfo ->
-                    _uiState.update { it.copy(nowPlayingMusicInfo = nowPlayingMusicInfo) }
+            mediaSessionRepository.observeNowPlayingInfoState()
+                .collectLatest { nowPlayingInfo ->
+                    _uiState.update {
+                        it.copy(
+                            nowPlayingInfo = (nowPlayingInfo as? NowPlayingInfoState.Connected)
+                                ?.nowPlayingInfo
+                                ?.toUiModel()
+                        )
+                    }
                 }
         }
     }

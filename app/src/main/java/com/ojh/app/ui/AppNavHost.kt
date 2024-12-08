@@ -1,4 +1,4 @@
-package com.ojh.app
+package com.ojh.app.ui
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -7,8 +7,9 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.ojh.feature.album.AlbumRoute
-import com.ojh.feature.library.LibraryRoute
+import com.ojh.app.AppDestination
+import com.ojh.feature.album.ui.AlbumRoute
+import com.ojh.feature.library.ui.LibraryRoute
 
 @Composable
 internal fun AppNavHost(

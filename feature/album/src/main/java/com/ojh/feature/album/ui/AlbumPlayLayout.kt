@@ -1,4 +1,4 @@
-package com.ojh.feature.album
+package com.ojh.feature.album.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row

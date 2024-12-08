@@ -1,10 +1,9 @@
 package com.ojh.core.media
 
-import com.ojh.core.model.MusicInfo
 import kotlinx.coroutines.flow.Flow
 
 interface MediaSessionRepository {
-    fun observeNowPlayingMusicInfo(): Flow<MusicInfo>
+    fun observeNowPlayingInfoState(): Flow<NowPlayingInfoState>
     fun playOrPause()
     fun next()
     fun prev()

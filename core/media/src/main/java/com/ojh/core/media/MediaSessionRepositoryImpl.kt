@@ -10,7 +10,7 @@ import com.google.common.util.concurrent.MoreExecutors
 import com.ojh.core.common.AppDispatchers
 import com.ojh.core.common.AppScope
 import com.ojh.core.common.Dispatcher
-import com.ojh.core.model.MusicInfo
+import com.ojh.core.model.NowPlayingInfo
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
@@ -25,11 +25,11 @@ import javax.inject.Inject
 internal class MediaSessionRepositoryImpl @Inject constructor(
     @ApplicationContext context: Context,
     @AppScope private val appScope: CoroutineScope,
-    @Dispatcher(AppDispatchers.MAIN) mainDispatcher: CoroutineDispatcher,
-    @Dispatcher(AppDispatchers.IO) ioDispatcher: CoroutineDispatcher
+    @Dispatcher(AppDispatchers.MAIN) mainDispatcher: CoroutineDispatcher
 ) : MediaSessionRepository {
 
-    private val _nowPlayingMusicInfo = MutableStateFlow(MusicInfo())
+    private val _nowPlayingNowPlayingInfo =
+        MutableStateFlow<NowPlayingInfoState>(NowPlayingInfoState.DisConnected)
     private var mediaController: MediaController? = null
 
     init {
@@ -42,32 +42,32 @@ internal class MediaSessionRepositoryImpl @Inject constructor(
                 mediaController?.addListener(object : Player.Listener {
                     override fun onMediaMetadataChanged(mediaMetadata: MediaMetadata) {
                         super.onMediaMetadataChanged(mediaMetadata)
-                        updateMusicInfo()
+                        updateNowPlayingInfo()
                     }
 
                     override fun onPlaybackStateChanged(playbackState: Int) {
                         super.onPlaybackStateChanged(playbackState)
-                        updateMusicInfo()
+                        updateNowPlayingInfo()
                     }
 
                     override fun onPlayWhenReadyChanged(playWhenReady: Boolean, reason: Int) {
                         super.onPlayWhenReadyChanged(playWhenReady, reason)
-                        updateMusicInfo()
+                        updateNowPlayingInfo()
                     }
 
                     override fun onShuffleModeEnabledChanged(shuffleModeEnabled: Boolean) {
                         super.onShuffleModeEnabledChanged(shuffleModeEnabled)
-                        updateMusicInfo()
+                        updateNowPlayingInfo()
                     }
 
                     override fun onRepeatModeChanged(repeatMode: Int) {
                         super.onRepeatModeChanged(repeatMode)
-                        updateMusicInfo()
+                        updateNowPlayingInfo()
                     }
 
                     override fun onVolumeChanged(volume: Float) {
                         super.onVolumeChanged(volume)
-                        updateMusicInfo()
+                        updateNowPlayingInfo()
                     }
                 })
             }, MoreExecutors.directExecutor()
@@ -78,15 +78,15 @@ internal class MediaSessionRepositoryImpl @Inject constructor(
                 delay(500)
                 withContext(mainDispatcher) {
                     if (mediaController?.isPlaying == true) {
-                        updateMusicInfo()
+                        updateNowPlayingInfo()
                     }
                 }
             }
         }
     }
 
-    override fun observeNowPlayingMusicInfo(): Flow<MusicInfo> {
-        return _nowPlayingMusicInfo
+    override fun observeNowPlayingInfoState(): Flow<NowPlayingInfoState> {
+        return _nowPlayingNowPlayingInfo
     }
 
     override fun playOrPause() {
@@ -135,11 +135,11 @@ internal class MediaSessionRepositoryImpl @Inject constructor(
         mediaController?.seekTo((duration * progress).toLong())
     }
 
-    private fun updateMusicInfo() {
+    private fun updateNowPlayingInfo() {
         val controller = mediaController ?: return
         val mediaMetadata = controller.mediaMetadata
 
-        val musicInfo = MusicInfo(
+        val nowPlayingInfo = NowPlayingInfo(
             id = controller.currentMediaItem?.mediaId?.toLong() ?: 0L,
             title = mediaMetadata.title?.toString(),
             artist = mediaMetadata.artist?.toString(),
@@ -154,6 +154,6 @@ internal class MediaSessionRepositoryImpl @Inject constructor(
             volume = controller.volume
         )
 
-        _nowPlayingMusicInfo.update { musicInfo }
+        _nowPlayingNowPlayingInfo.update { NowPlayingInfoState.Connected(nowPlayingInfo) }
     }
 }

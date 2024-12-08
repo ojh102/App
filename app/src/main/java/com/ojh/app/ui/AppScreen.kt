@@ -1,4 +1,4 @@
-package com.ojh.app
+package com.ojh.app.ui
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
@@ -25,7 +25,9 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.ojh.feature.player.PlayerBottomSheet
+import com.ojh.app.AppDestination
+import com.ojh.app.appScreens
+import com.ojh.feature.player.ui.PlayerBottomSheet
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

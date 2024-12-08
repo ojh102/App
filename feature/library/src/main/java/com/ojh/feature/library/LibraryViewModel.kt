@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ojh.core.data.MusicRepository
 import com.ojh.core.data.PermissionRepository
+import com.ojh.feature.library.ui.model.toUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -33,7 +34,7 @@ internal class LibraryViewModel @Inject constructor(
                 .filter { it }
                 .flatMapLatest { musicRepository.observeAlbums() }
                 .collect { albums ->
-                    _uiState.update { it.copy(albums = albums) }
+                    _uiState.update { it.copy(albums = albums.map { it.toUiModel() }) }
                 }
         }
     }

@@ -1,13 +1,13 @@
 package com.ojh.feature.album
 
 import androidx.compose.runtime.Immutable
-import com.ojh.core.model.Album
-import com.ojh.core.model.MusicInfo
-import com.ojh.core.model.Track
+import com.ojh.feature.album.ui.model.AlbumUiModel
+import com.ojh.feature.album.ui.model.NowPlayingInfoUiModel
+import com.ojh.feature.album.ui.model.TrackUiModel
 
 @Immutable
 internal data class AlbumUiState(
-    val tracks: List<Track> = emptyList(),
-    val album: Album? = null,
-    val nowPlayingMusicInfo: MusicInfo = MusicInfo()
+    val tracks: List<TrackUiModel> = emptyList(),
+    val album: AlbumUiModel? = null,
+    val nowPlayingInfo: NowPlayingInfoUiModel? = null
 )

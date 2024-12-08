@@ -1,4 +1,4 @@
-package com.ojh.feature.player
+package com.ojh.feature.player.ui
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
@@ -15,7 +15,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ojh.core.compose.theme.AppTheme
-import com.ojh.core.model.MusicInfo
+import com.ojh.core.model.NowPlayingInfo
+import com.ojh.feature.player.PlayerAction
+import com.ojh.feature.player.PlayerSideEffect
+import com.ojh.feature.player.PlayerUiState
+import com.ojh.feature.player.PlayerViewModel
+import com.ojh.feature.player.ui.model.toUiModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -61,26 +66,33 @@ private fun PlayerContent(
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight()
-            .clickable {
-                onAction(PlayerAction.ClickPlayer)
-            }
     ) {
-        if (uiState.isExpanded) {
-            ExpandedPlayerLayout(
-                uiState = uiState,
-                onClickRepeat = { onAction(PlayerAction.ClickRepeat) },
-                onClickPrev = { onAction(PlayerAction.ClickPrev) },
-                onClickPlayOrPause = { onAction(PlayerAction.ClickPlayOrPause) },
-                onClickNext = { onAction(PlayerAction.ClickNext) },
-                onClickShuffle = { onAction(PlayerAction.ClickShuffle) },
-                onChangeVolume = { onAction(PlayerAction.ChangeVolume(it)) },
-                onChangeProgress = { onAction(PlayerAction.ChangeProgress(it)) }
-            )
-        } else {
-            CollapsedPlayerLayout(
-                uiState = uiState,
-                onClickPlayOrPause = { onAction(PlayerAction.ClickPlayOrPause) }
-            )
+        when {
+            uiState.nowPlayingInfo == null -> {
+                EmptyPlayerLayout()
+            }
+
+            uiState.isExpanded -> {
+                ExpandedPlayerLayout(
+                    nowPlayingInfo = uiState.nowPlayingInfo,
+                    onClickRepeat = { onAction(PlayerAction.ClickRepeat) },
+                    onClickPrev = { onAction(PlayerAction.ClickPrev) },
+                    onClickPlayOrPause = { onAction(PlayerAction.ClickPlayOrPause) },
+                    onClickNext = { onAction(PlayerAction.ClickNext) },
+                    onClickShuffle = { onAction(PlayerAction.ClickShuffle) },
+                    onChangeVolume = { onAction(PlayerAction.ChangeVolume(it)) },
+                    onChangeProgress = { onAction(PlayerAction.ChangeProgress(it)) },
+                    modifier = Modifier.clickable { onAction(PlayerAction.ClickPlayer) }
+                )
+            }
+
+            !uiState.isExpanded -> {
+                CollapsedPlayerLayout(
+                    nowPlayingInfo = uiState.nowPlayingInfo,
+                    onClickPlayOrPause = { onAction(PlayerAction.ClickPlayOrPause) },
+                    modifier = Modifier.clickable { onAction(PlayerAction.ClickPlayer) }
+                )
+            }
         }
     }
 }
@@ -91,12 +103,12 @@ private fun PlayerContentPreview_collpase() {
     AppTheme {
         PlayerContent(
             uiState = PlayerUiState(
-                musicInfo = MusicInfo(
+                nowPlayingInfo = NowPlayingInfo(
                     title = "타이틀",
                     artist = "아티스트",
                     artworkUri = null,
                     isPlaying = true
-                ),
+                ).toUiModel(),
                 isExpanded = false
             ),
             onAction = {}
@@ -110,12 +122,12 @@ private fun PlayerContentPreview_expand() {
     AppTheme {
         PlayerContent(
             uiState = PlayerUiState(
-                musicInfo = MusicInfo(
+                nowPlayingInfo = NowPlayingInfo(
                     title = "타이틀",
                     artist = "아티스트",
                     artworkUri = null,
                     isPlaying = true
-                ),
+                ).toUiModel(),
                 isExpanded = true
             ),
             onAction = {}

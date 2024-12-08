@@ -1,4 +1,4 @@
-package com.ojh.feature.library
+package com.ojh.feature.library.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -17,11 +17,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.ojh.core.compose.theme.AppTheme
-import com.ojh.core.model.Album
+import com.ojh.feature.library.ui.model.AlbumUiModel
 
 @Composable
 internal fun AlbumItem(
-    album: Album,
+    album: AlbumUiModel,
     onClick: (Long) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -60,7 +60,7 @@ internal fun AlbumItem(
 private fun AlbumItemPreview() {
     AppTheme {
         AlbumItem(
-            album = Album(id = 0, name = "앨범0", artist = "아티스트0", albumArtUri = ""),
+            album = AlbumUiModel(id = 0, name = "앨범0", artist = "아티스트0", albumArtUri = ""),
             onClick = {}
         )
     }

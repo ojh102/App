@@ -1,4 +1,4 @@
-package com.ojh.feature.player
+package com.ojh.feature.player.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -18,15 +18,19 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.ojh.core.compose.theme.AppTheme
-import com.ojh.core.model.MusicInfo
+import com.ojh.core.model.NowPlayingInfo
+import com.ojh.feature.player.PlayerUiState
+import com.ojh.feature.player.ui.model.NowPlayingInfoUiModel
+import com.ojh.feature.player.ui.model.toUiModel
 
 @Composable
 internal fun CollapsedPlayerLayout(
-    uiState: PlayerUiState,
-    onClickPlayOrPause: () -> Unit
+    nowPlayingInfo: NowPlayingInfoUiModel,
+    onClickPlayOrPause: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .background(color = MaterialTheme.colorScheme.secondaryContainer)
             .height(80.dp),
         verticalAlignment = Alignment.CenterVertically
@@ -34,7 +38,7 @@ internal fun CollapsedPlayerLayout(
 
         IconButton(onClick = onClickPlayOrPause) {
             Icon(
-                painter = if (uiState.musicInfo.isPlaying) {
+                painter = if (nowPlayingInfo.isPlaying) {
                     painterResource(androidx.media3.session.R.drawable.media3_icon_pause)
                 } else {
                     painterResource(androidx.media3.session.R.drawable.media3_icon_play)
@@ -44,31 +48,20 @@ internal fun CollapsedPlayerLayout(
         }
         Column(modifier = Modifier.weight(1f)) {
             Text(
-                text = uiState.musicInfo.title ?: "재생중인 음악이 없습니다.",
+                text = nowPlayingInfo.title.orEmpty(),
                 style = MaterialTheme.typography.titleSmall
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                text = uiState.musicInfo.artist ?: "앨범에서 음악을 선택하세요.",
+                text = nowPlayingInfo.artist.orEmpty(),
                 style = MaterialTheme.typography.bodySmall
             )
         }
 
         AsyncImage(
             modifier = Modifier.size(80.dp),
-            model = uiState.musicInfo.artworkUri,
+            model = nowPlayingInfo.artworkUri,
             contentDescription = null
-        )
-    }
-}
-
-@Preview
-@Composable
-private fun CollapsedPlayerLayout_empty() {
-    AppTheme {
-        CollapsedPlayerLayout(
-            uiState = PlayerUiState(musicInfo = MusicInfo()),
-            onClickPlayOrPause = {}
         )
     }
 }
@@ -78,14 +71,12 @@ private fun CollapsedPlayerLayout_empty() {
 private fun CollapsedPlayerLayoutPreview() {
     AppTheme {
         CollapsedPlayerLayout(
-            uiState = PlayerUiState(
-                musicInfo = MusicInfo(
-                    title = "타이틀",
-                    artist = "아티스트",
-                    artworkUri = null,
-                    isPlaying = true
-                )
-            ),
+            nowPlayingInfo = NowPlayingInfo(
+                title = "타이틀",
+                artist = "아티스트",
+                artworkUri = null,
+                isPlaying = true
+            ).toUiModel(),
             onClickPlayOrPause = {}
         )
     }

@@ -1,6 +1,6 @@
 package com.ojh.core.model
 
-data class MusicInfo(
+data class NowPlayingInfo(
     val id: Long = 0,
     val title: String? = null,
     val artist: String? = null,

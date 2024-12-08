@@ -1,4 +1,4 @@
-package com.ojh.feature.library
+package com.ojh.feature.library.ui
 
 import android.content.Context
 import android.content.Intent
@@ -25,7 +25,11 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ojh.core.compose.OnLifecycleEvent
 import com.ojh.core.compose.theme.AppTheme
-import com.ojh.core.model.Album
+import com.ojh.feature.library.LibraryAction
+import com.ojh.feature.library.LibrarySideEffect
+import com.ojh.feature.library.LibraryUiState
+import com.ojh.feature.library.LibraryViewModel
+import com.ojh.feature.library.ui.model.AlbumUiModel
 import timber.log.Timber
 
 @Composable
@@ -151,7 +155,7 @@ private fun LibraryContentPreview_granted() {
             uiState = LibraryUiState(
                 musicPermissionGranted = true,
                 albums = (0..10).map {
-                    Album(
+                    AlbumUiModel(
                         id = it.toLong(),
                         name = "앨범$it",
                         artist = "아티스트$it",

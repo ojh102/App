@@ -1,4 +1,4 @@
-package com.ojh.feature.album
+package com.ojh.feature.album.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -14,12 +14,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ojh.core.compose.theme.AppTheme
-import com.ojh.core.model.Track
+import com.ojh.feature.album.ui.model.TrackUiModel
 
 @Composable
 internal fun TrackItem(
-    track: Track,
-    index: Int,
+    track: TrackUiModel,
     isSelected: Boolean,
     onClick: (Long) -> Unit,
     modifier: Modifier = Modifier
@@ -40,7 +39,7 @@ internal fun TrackItem(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = (index + 1).toString(),
+            text = "${track.displayedTrackNumber}",
             style = MaterialTheme.typography.labelMedium
         )
         Text(
@@ -56,14 +55,11 @@ internal fun TrackItem(
 private fun TrackItemPreview() {
     AppTheme {
         TrackItem(
-            track = Track(
-                id = 0,
-                trackNumber = 0,
-                title = "타이틀",
-                artist = "아티스트",
-                data = ""
+            track = TrackUiModel(
+                id = 1,
+                displayedTrackNumber = 1,
+                title = "타이틀1"
             ),
-            index = 0,
             isSelected = false,
             onClick = {}
         )
@@ -75,14 +71,11 @@ private fun TrackItemPreview() {
 private fun TrackItemPreview_selected() {
     AppTheme {
         TrackItem(
-            track = Track(
-                id = 0,
-                trackNumber = 0,
-                title = "타이틀",
-                artist = "아티스트",
-                data = ""
+            track = TrackUiModel(
+                id = 2,
+                displayedTrackNumber = 2,
+                title = "타이틀2"
             ),
-            index = 0,
             isSelected = true,
             onClick = {}
         )

@@ -1,4 +1,4 @@
-package com.ojh.feature.player
+package com.ojh.feature.player.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -28,40 +28,44 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.ojh.core.compose.theme.AppTheme
-import com.ojh.core.model.MusicInfo
+import com.ojh.core.model.NowPlayingInfo
+import com.ojh.feature.player.PlayerUiState
+import com.ojh.feature.player.ui.model.NowPlayingInfoUiModel
+import com.ojh.feature.player.ui.model.toUiModel
 
 @Composable
 internal fun ExpandedPlayerLayout(
-    uiState: PlayerUiState,
+    nowPlayingInfo: NowPlayingInfoUiModel,
     onClickRepeat: () -> Unit,
     onClickPrev: () -> Unit,
     onClickPlayOrPause: () -> Unit,
     onClickNext: () -> Unit,
     onClickShuffle: () -> Unit,
     onChangeVolume: (Float) -> Unit,
-    onChangeProgress: (Float) -> Unit
+    onChangeProgress: (Float) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .background(color = MaterialTheme.colorScheme.secondaryContainer)
             .navigationBarsPadding()
             .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         AlbumInfo(
-            title = uiState.musicInfo.title,
-            artist = uiState.musicInfo.artist,
-            artworkUri = uiState.musicInfo.artworkUri
+            title = nowPlayingInfo.title,
+            artist = nowPlayingInfo.artist,
+            artworkUri = nowPlayingInfo.artworkUri
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
         PlayerController(
-            isRepeated = uiState.musicInfo.isRepeated,
-            hasPrev = uiState.musicInfo.hasPrev,
-            isPlaying = uiState.musicInfo.isPlaying,
-            hasNext = uiState.musicInfo.hasNext,
-            isShuffled = uiState.musicInfo.isShuffled,
+            isRepeated = nowPlayingInfo.isRepeated,
+            hasPrev = nowPlayingInfo.hasPrev,
+            isPlaying = nowPlayingInfo.isPlaying,
+            hasNext = nowPlayingInfo.hasNext,
+            isShuffled = nowPlayingInfo.isShuffled,
             onClickRepeat = onClickRepeat,
             onClickPrev = onClickPrev,
             onClickPlayOrPause = onClickPlayOrPause,
@@ -71,13 +75,13 @@ internal fun ExpandedPlayerLayout(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        VolumeSlider(volume = uiState.musicInfo.volume, onChangeVolume = onChangeVolume)
+        VolumeSlider(volume = nowPlayingInfo.volume, onChangeVolume = onChangeVolume)
 
         Spacer(modifier = Modifier.height(4.dp))
 
         PlayerSeekBar(
-            currentPosition = uiState.musicInfo.currentPosition,
-            duration = uiState.musicInfo.duration,
+            currentPosition = nowPlayingInfo.currentPosition,
+            duration = nowPlayingInfo.duration,
             onChangeProgress = onChangeProgress
         )
     }
@@ -229,33 +233,12 @@ private fun PlayerSeekBar(
 private fun ExpandedPlayerLayoutPreview() {
     AppTheme {
         ExpandedPlayerLayout(
-            uiState = PlayerUiState(
-                musicInfo = MusicInfo(
-                    title = "타이틀",
-                    artist = "아티스트",
-                    artworkUri = null,
-                    isPlaying = true
-                )
-            ),
-            onClickRepeat = {},
-            onClickNext = {},
-            onClickShuffle = {},
-            onClickPrev = {},
-            onClickPlayOrPause = {},
-            onChangeVolume = {},
-            onChangeProgress = {}
-        )
-    }
-}
-
-@Preview
-@Composable
-private fun ExpandedPlayerLayoutPreview_empty() {
-    AppTheme {
-        ExpandedPlayerLayout(
-            uiState = PlayerUiState(
-                musicInfo = MusicInfo()
-            ),
+            nowPlayingInfo = NowPlayingInfo(
+                title = "타이틀",
+                artist = "아티스트",
+                artworkUri = null,
+                isPlaying = true
+            ).toUiModel(),
             onClickRepeat = {},
             onClickNext = {},
             onClickShuffle = {},

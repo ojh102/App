@@ -1,4 +1,4 @@
-package com.ojh.feature.album
+package com.ojh.feature.album.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -17,10 +17,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.ojh.core.compose.theme.AppTheme
-import com.ojh.core.model.Album
+import com.ojh.feature.album.ui.model.AlbumUiModel
 
 @Composable
-internal fun AlbumInfoLayout(album: Album?, modifier: Modifier = Modifier) {
+internal fun AlbumInfoLayout(album: AlbumUiModel?, modifier: Modifier = Modifier) {
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -51,7 +51,7 @@ internal fun AlbumInfoLayout(album: Album?, modifier: Modifier = Modifier) {
 private fun AlbumInfoLayoutPreview() {
     AppTheme {
         AlbumInfoLayout(
-            album = Album(id = 0, name = "앨범0", artist = "아티스트0", albumArtUri = "")
+            album = AlbumUiModel(id = 0, name = "앨범0", artist = "아티스트0", albumArtUri = "")
         )
     }
 }

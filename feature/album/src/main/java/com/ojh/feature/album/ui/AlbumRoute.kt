@@ -1,4 +1,4 @@
-package com.ojh.feature.album
+package com.ojh.feature.album.ui
 
 import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -17,8 +17,13 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ojh.core.media.MusicPlayerService
-import com.ojh.core.model.Album
-import com.ojh.core.model.Track
+import com.ojh.feature.album.AlbumAction
+import com.ojh.feature.album.AlbumSideEffect
+import com.ojh.feature.album.AlbumUiState
+import com.ojh.feature.album.AlbumViewModel
+import com.ojh.feature.album.ui.model.AlbumUiModel
+import com.ojh.feature.album.ui.model.NowPlayingInfoUiModel
+import com.ojh.feature.album.ui.model.TrackUiModel
 
 @Composable
 fun AlbumRoute(modifier: Modifier = Modifier) {
@@ -87,11 +92,10 @@ private fun AlbumContent(
             modifier = Modifier.fillMaxWidth(),
             verticalArrangement = Arrangement.spacedBy(1.dp)
         ) {
-            itemsIndexed(items = uiState.tracks, key = { _, track -> track.id }) { index, track ->
+            items(items = uiState.tracks, key = { it.id }) { track ->
                 TrackItem(
                     track = track,
-                    index = index,
-                    isSelected = track.id == uiState.nowPlayingMusicInfo.id,
+                    isSelected = track.id == uiState.nowPlayingInfo?.id,
                     onClick = { trackId ->
                         onAction(AlbumAction.ClickTrack(trackId = trackId))
                     }
@@ -107,15 +111,14 @@ private fun AlbumContentPreview() {
     AlbumContent(
         uiState = AlbumUiState(
             tracks = (0..10).map {
-                Track(
+                TrackUiModel(
                     id = it.toLong(),
-                    trackNumber = it,
+                    displayedTrackNumber = it + 1,
                     title = "타이틀$it",
-                    artist = "아티스트$it",
-                    data = ""
                 )
             },
-            album = Album(id = 0, name = "앨범0", artist = "아티스트0", albumArtUri = "")
+            album = AlbumUiModel(id = 0, name = "앨범0", artist = "아티스트0", albumArtUri = ""),
+            nowPlayingInfo = NowPlayingInfoUiModel(id = 1)
         ),
         onAction = {}
     )
