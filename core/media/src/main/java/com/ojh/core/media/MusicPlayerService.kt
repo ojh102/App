@@ -1,9 +1,13 @@
 package com.ojh.core.media
 
 import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.NotificationManager.IMPORTANCE_HIGH
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import androidx.annotation.OptIn
 import androidx.core.app.NotificationCompat
@@ -45,6 +49,11 @@ class MusicPlayerService : MediaSessionService() {
 
     private var mediaSession: MediaSession? = null
 
+    private val notificationManager by lazy {
+        getSystemService(NotificationManager::class.java)
+    }
+
+
     override fun onGetSession(controllerInfo: MediaSession.ControllerInfo): MediaSession? {
         return mediaSession
     }
@@ -52,6 +61,7 @@ class MusicPlayerService : MediaSessionService() {
     @OptIn(UnstableApi::class)
     override fun onCreate() {
         super.onCreate()
+        createNotificationChannel()
         initMediaSession()
         setMediaNotificationProvider(object : MediaNotification.Provider {
             override fun createNotification(
@@ -122,6 +132,19 @@ class MusicPlayerService : MediaSessionService() {
     }
 
 
+    private fun createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                CHANNEL_ID,
+                CHANNEL_NAME,
+                IMPORTANCE_HIGH
+            ).apply {
+                setShowBadge(false)
+            }
+            notificationManager.createNotificationChannel(channel)
+        }
+    }
+
     @OptIn(UnstableApi::class)
     private fun createNotification(mediaSession: MediaSession): Notification {
         return NotificationCompat.Builder(this, CHANNEL_ID)
@@ -171,6 +194,7 @@ class MusicPlayerService : MediaSessionService() {
 
     companion object {
         private const val CHANNEL_ID = "channel_id::music"
+        private const val CHANNEL_NAME = "Music"
 
         private const val ALBUM_ID = "album_id"
         private const val IS_SHUFFLED = "is_shuffled"
