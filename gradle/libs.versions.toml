@@ -4,7 +4,6 @@ androidTools = "31.7.2"
 kotlin = "2.0.20"
 coreKtx = "1.15.0"
 junit = "4.13.2"
-junitVersion = "1.2.1"
 androidxLifecycle = "2.8.7"
 activityCompose = "1.9.3"
 composeBom = "2024.11.00"
@@ -22,6 +21,8 @@ material = "1.12.0"
 material3 = "1.3.1"
 media3 = "1.5.0"
 timber = "5.0.1"
+mockK = "1.13.13"
+turbine = "1.2.0"
 
 [libraries]
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
@@ -32,7 +33,6 @@ androidx-media3-session = { group = "androidx.media3", name = "media3-session", 
 androidx-media3-exoplayer = { group = "androidx.media3", name = "media3-exoplayer", version.ref = "media3" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
-androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 compose-hilt-navigation = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "androidxHiltNavigationCompose" }
 compose-lifecycle-runtime = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidxLifecycle" }
 compose-lifecycle-viewModel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "androidxLifecycle" }
@@ -64,9 +64,13 @@ kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-cor
 kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinxCoroutines" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 
-junit = { group = "junit", name = "junit", version.ref = "junit" }
-kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
 timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
+
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+test-mockK = { group = "io.mockk", name = "mockk", version.ref = "mockK" }
+test-mockKAndroid = { group = "io.mockk", name = "mockk-android", version.ref = "mockK" }
+test-turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
+kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
 
 # Dependencies of the included build-logic
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
@@ -95,7 +99,6 @@ ojh-feature = { id = "ojh.feature" }
 ojh-flavors = { id = "ojh.flavors" }
 ojh-hilt = { id = "ojh.hilt" }
 ojh-jvm-library = { id = "ojh.jvm.library" }
-ojh-test = { id = "ojh.test" }
 
 [bundles]
 androidx = [
@@ -154,5 +157,8 @@ media3 = [
 
 test = [
     "kotlinx-coroutines-test",
-    "androidx-junit"
+    "junit",
+    "test-mockK",
+    "test-mockKAndroid",
+    "test-turbine"
 ]

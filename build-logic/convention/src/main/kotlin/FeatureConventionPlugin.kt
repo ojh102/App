@@ -20,6 +20,7 @@ class FeatureConventionPlugin : Plugin<Project> {
 
             dependencies {
                 add("implementation", libs.findLibrary("kotlinx.serialization.json").get())
+                add("debugImplementation", libs.findBundle("test").get())
             }
         }
     }

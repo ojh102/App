@@ -1,12 +1,10 @@
 package com.ojh.feature.album
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ojh.core.data.MusicRepository
 import com.ojh.core.media.MediaSessionRepository
 import com.ojh.core.media.NowPlayingInfoState
-import com.ojh.core.navigation.AppDestination
 import com.ojh.feature.album.ui.model.toUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -20,7 +18,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class AlbumViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle,
+    private val albumParams: AlbumParams,
     private val musicRepository: MusicRepository,
     private val mediaSessionRepository: MediaSessionRepository
 ) : ViewModel() {
@@ -30,8 +28,8 @@ internal class AlbumViewModel @Inject constructor(
     private val _sideEffect = MutableSharedFlow<AlbumSideEffect>()
     val sideEffect = _sideEffect.asSharedFlow()
 
-    private val albumId = savedStateHandle.get<Long>(AppDestination.Album.albumIdArg)
-        ?: throw IllegalArgumentException("invalid args")
+    private val albumId: Long
+        get() = albumParams.albumId
 
     init {
         viewModelScope.launch {

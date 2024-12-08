@@ -67,9 +67,5 @@ gradlePlugin {
             id = "ojh.jvm.library"
             implementationClass = "JvmLibraryConventionPlugin"
         }
-        register("test") {
-            id = "ojh.test"
-            implementationClass = "TestConventionPlugin"
-        }
     }
 }
