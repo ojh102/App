@@ -36,7 +36,8 @@ internal class PlayerViewModel @Inject constructor(
     fun onAction(action: PlayerAction) {
         when (action) {
             is PlayerAction.ClickPlayOrPause -> clickPlayOrPause()
-            is PlayerAction.ClickPlayer -> clickPlayer()
+            is PlayerAction.ClickPlayer -> expandOrCollapse()
+            is PlayerAction.ClickBack -> expandOrCollapse()
             is PlayerAction.ClickNext -> clickNext()
             is PlayerAction.ClickPrev -> clickPrev()
             is PlayerAction.ClickRepeat -> clickRepeat()
@@ -80,7 +81,7 @@ internal class PlayerViewModel @Inject constructor(
         mediaSessionRepository.changeProgress(progress)
     }
 
-    private fun clickPlayer() {
+    private fun expandOrCollapse() {
         val isExpanded = !uiState.value.isExpanded
         if (isExpanded) {
             produceSideEffect(PlayerSideEffect.Expand)
