@@ -34,14 +34,14 @@ internal class LibraryViewModel @Inject constructor(
                 .filter { it }
                 .flatMapLatest { musicRepository.observeAlbums() }
                 .collect { albums ->
-                    _uiState.update { it.copy(albums = albums.map { it.toUiModel() }) }
+                    _uiState.update { it.copy(albums = albums.map { album -> album.toUiModel() }) }
                 }
         }
     }
 
     fun onAction(action: LibraryAction) {
         when (action) {
-            is LibraryAction.OnResume -> syncMusicPermission()
+            is LibraryAction.SyncPermission -> syncMusicPermission()
             is LibraryAction.RequestMusicPermission -> requestMusicPermission()
             is LibraryAction.GrantMusicPermission -> grantMusicPermission(action.permissionGranted)
             is LibraryAction.DismissSettingDialogNegativeButton -> dismissSettingsDialogNegativeButton()
@@ -58,15 +58,12 @@ internal class LibraryViewModel @Inject constructor(
 
     private fun syncMusicPermission() {
         val musicPermissionGranted = permissionRepository.isMusicReadPermissionGranted()
-        _uiState.update {
-            it.copy(musicPermissionGranted = musicPermissionGranted)
-        }
-        if (!musicPermissionGranted) {
-            requestMusicPermission()
-        }
+        _uiState.update { it.copy(musicPermissionGranted = musicPermissionGranted) }
     }
 
     private fun requestMusicPermission() {
+        val musicPermissionGranted = permissionRepository.isMusicReadPermissionGranted()
+        if (musicPermissionGranted) return
         produceSideEffect(
             LibrarySideEffect.LaunchRequestPermission(
                 permission = permissionRepository.permission()

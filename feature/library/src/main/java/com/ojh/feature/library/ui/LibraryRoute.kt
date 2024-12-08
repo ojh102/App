@@ -75,9 +75,13 @@ private fun LibraryScreen(
 
     OnLifecycleEvent { _, event ->
         when (event) {
-            Lifecycle.Event.ON_RESUME -> viewModel.onAction(LibraryAction.OnResume)
+            Lifecycle.Event.ON_START -> viewModel.onAction(LibraryAction.SyncPermission)
             else -> {}
         }
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.onAction(LibraryAction.RequestMusicPermission)
     }
 
     LibraryContent(
