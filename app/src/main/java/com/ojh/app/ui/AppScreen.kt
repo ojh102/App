@@ -29,32 +29,6 @@ import com.ojh.core.navigation.AppDestination
 import com.ojh.core.navigation.appScreens
 import com.ojh.feature.player.ui.PlayerBottomSheet
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-internal fun AppBar(
-    currentScreen: com.ojh.core.navigation.AppDestination,
-    canNavigateBack: Boolean,
-    navigateUp: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    TopAppBar(
-        title = { Text(currentScreen.route) },
-        colors = TopAppBarDefaults.mediumTopAppBarColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer
-        ),
-        modifier = modifier,
-        navigationIcon = {
-            if (canNavigateBack) {
-                IconButton(onClick = navigateUp) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = null
-                    )
-                }
-            }
-        }
-    )
-}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

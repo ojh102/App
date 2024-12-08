@@ -18,10 +18,10 @@ internal fun AppNavHost(
 ) {
     NavHost(
         navController = navController,
-        startDestination = com.ojh.core.navigation.AppDestination.Library.route,
+        startDestination = AppDestination.Library.route,
         modifier = modifier
     ) {
-        composable(route = com.ojh.core.navigation.AppDestination.Library.route) {
+        composable(route = AppDestination.Library.route) {
             LibraryRoute(
                 modifier = Modifier
                     .fillMaxSize(),
@@ -31,9 +31,9 @@ internal fun AppNavHost(
             )
         }
         composable(
-            route = com.ojh.core.navigation.AppDestination.Album.routeWithArgs,
-            arguments = com.ojh.core.navigation.AppDestination.Album.arguments,
-            deepLinks = com.ojh.core.navigation.AppDestination.Album.deepLinks
+            route = AppDestination.Album.routeWithArgs,
+            arguments = AppDestination.Album.arguments,
+            deepLinks = AppDestination.Album.deepLinks
         ) {
             AlbumRoute(
                 modifier = Modifier
@@ -61,5 +61,5 @@ fun NavHostController.navigateSingleTopTo(route: String) =
     }
 
 private fun NavHostController.navigateToAlbum(albumId: Long) {
-    this.navigateSingleTopTo("${com.ojh.core.navigation.AppDestination.Album.route}/$albumId")
+    this.navigateSingleTopTo("${AppDestination.Album.route}/$albumId")
 }
