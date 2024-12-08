@@ -24,8 +24,8 @@ import kotlin.test.assertTrue
 internal class LibraryViewModelTest {
     private val testDispatcher: TestDispatcher = UnconfinedTestDispatcher()
 
-    private val musicRepository: MusicRepository = mockk(relaxed = true)
-    private val permissionRepository: PermissionRepository = mockk(relaxed = true)
+    private val musicRepository: MusicRepository = mockk()
+    private val permissionRepository: PermissionRepository = mockk()
 
     private lateinit var viewModel: LibraryViewModel
 
