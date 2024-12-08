@@ -7,7 +7,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.ojh.app.AppDestination
+import com.ojh.core.navigation.AppDestination
 import com.ojh.feature.album.ui.AlbumRoute
 import com.ojh.feature.library.ui.LibraryRoute
 
@@ -18,10 +18,10 @@ internal fun AppNavHost(
 ) {
     NavHost(
         navController = navController,
-        startDestination = AppDestination.Library.route,
+        startDestination = com.ojh.core.navigation.AppDestination.Library.route,
         modifier = modifier
     ) {
-        composable(route = AppDestination.Library.route) {
+        composable(route = com.ojh.core.navigation.AppDestination.Library.route) {
             LibraryRoute(
                 modifier = Modifier
                     .fillMaxSize(),
@@ -31,9 +31,9 @@ internal fun AppNavHost(
             )
         }
         composable(
-            route = AppDestination.Album.routeWithArgs,
-            arguments = AppDestination.Album.arguments,
-            deepLinks = AppDestination.Album.deepLinks
+            route = com.ojh.core.navigation.AppDestination.Album.routeWithArgs,
+            arguments = com.ojh.core.navigation.AppDestination.Album.arguments,
+            deepLinks = com.ojh.core.navigation.AppDestination.Album.deepLinks
         ) {
             AlbumRoute(
                 modifier = Modifier
@@ -61,5 +61,5 @@ fun NavHostController.navigateSingleTopTo(route: String) =
     }
 
 private fun NavHostController.navigateToAlbum(albumId: Long) {
-    this.navigateSingleTopTo("${AppDestination.Album.route}/$albumId")
+    this.navigateSingleTopTo("${com.ojh.core.navigation.AppDestination.Album.route}/$albumId")
 }

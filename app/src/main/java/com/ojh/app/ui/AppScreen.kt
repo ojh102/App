@@ -25,14 +25,14 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.ojh.app.AppDestination
-import com.ojh.app.appScreens
+import com.ojh.core.navigation.AppDestination
+import com.ojh.core.navigation.appScreens
 import com.ojh.feature.player.ui.PlayerBottomSheet
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun AppBar(
-    currentScreen: AppDestination,
+    currentScreen: com.ojh.core.navigation.AppDestination,
     canNavigateBack: Boolean,
     navigateUp: () -> Unit,
     modifier: Modifier = Modifier

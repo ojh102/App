@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.ojh.core.data.MusicRepository
 import com.ojh.core.media.MediaSessionRepository
 import com.ojh.core.media.NowPlayingInfoState
+import com.ojh.core.navigation.AppDestination
 import com.ojh.feature.album.ui.model.toUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -29,7 +30,7 @@ internal class AlbumViewModel @Inject constructor(
     private val _sideEffect = MutableSharedFlow<AlbumSideEffect>()
     val sideEffect = _sideEffect.asSharedFlow()
 
-    private val albumId = savedStateHandle.get<Long>(ALBUM_UD)
+    private val albumId = savedStateHandle.get<Long>(AppDestination.Album.albumIdArg)
         ?: throw IllegalArgumentException("invalid args")
 
     init {
@@ -99,9 +100,5 @@ internal class AlbumViewModel @Inject constructor(
                 selectedTrackId = trackId
             )
         )
-    }
-
-    companion object {
-        private const val ALBUM_UD = "album_id"
     }
 }

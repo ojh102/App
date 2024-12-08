@@ -1,10 +1,10 @@
-package com.ojh.app
+package com.ojh.core.navigation
 
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import androidx.navigation.navDeepLink
 
-internal sealed interface AppDestination {
+sealed interface AppDestination {
     val route: String
 
     data object Library : AppDestination {
@@ -25,6 +25,6 @@ internal sealed interface AppDestination {
 }
 
 
-internal val appScreens = listOf(AppDestination.Library, AppDestination.Album)
+val appScreens = listOf(AppDestination.Library, AppDestination.Album)
 
-private const val SCHEME = "app"
+private const val SCHEME = "ojh"
