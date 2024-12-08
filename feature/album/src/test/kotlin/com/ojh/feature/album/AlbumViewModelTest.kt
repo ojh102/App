@@ -24,11 +24,10 @@ import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 internal class AlbumViewModelTest {
-
     private val testDispatcher: TestDispatcher = UnconfinedTestDispatcher()
 
     private val albumParams: AlbumParams = mockk()
-    private val musicRepository: MusicRepository = mockk(relaxed = true)
+    private val musicRepository: MusicRepository = mockk()
     private val mediaSessionRepository: MediaSessionRepository = mockk()
 
     private lateinit var viewModel: AlbumViewModel
