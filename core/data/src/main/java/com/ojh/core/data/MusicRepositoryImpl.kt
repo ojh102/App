@@ -8,8 +8,8 @@ import android.net.Uri
 import android.os.Handler
 import android.os.Looper
 import android.provider.MediaStore
-import com.ojh.core.common.AppDispatchers
-import com.ojh.core.common.Dispatcher
+import com.ojh.core.coroutine.AppDispatchers
+import com.ojh.core.coroutine.Dispatcher
 import com.ojh.core.model.Album
 import com.ojh.core.model.Track
 import dagger.hilt.android.qualifiers.ApplicationContext

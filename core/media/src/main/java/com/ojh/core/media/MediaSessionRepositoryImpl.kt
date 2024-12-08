@@ -7,9 +7,9 @@ import androidx.media3.common.Player
 import androidx.media3.session.MediaController
 import androidx.media3.session.SessionToken
 import com.google.common.util.concurrent.MoreExecutors
-import com.ojh.core.common.AppDispatchers
-import com.ojh.core.common.AppScope
-import com.ojh.core.common.Dispatcher
+import com.ojh.core.coroutine.AppDispatchers
+import com.ojh.core.coroutine.AppScope
+import com.ojh.core.coroutine.Dispatcher
 import com.ojh.core.model.NowPlayingInfo
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineDispatcher

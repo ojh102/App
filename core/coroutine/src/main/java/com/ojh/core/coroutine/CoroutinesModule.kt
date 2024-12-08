@@ -1,4 +1,4 @@
-package com.ojh.core.common
+package com.ojh.core.coroutine
 
 import dagger.Module
 import dagger.Provides

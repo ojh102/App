@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.ojh.core.common"
+    namespace = "com.ojh.core.coroutine"
 }
 
 dependencies {

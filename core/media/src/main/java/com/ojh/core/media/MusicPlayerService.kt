@@ -23,9 +23,9 @@ import androidx.media3.session.MediaSession
 import androidx.media3.session.MediaSessionService
 import androidx.media3.session.MediaStyleNotificationHelper
 import com.google.common.collect.ImmutableList
-import com.ojh.core.common.AppDispatchers
-import com.ojh.core.common.AppScope
-import com.ojh.core.common.Dispatcher
+import com.ojh.core.coroutine.AppDispatchers
+import com.ojh.core.coroutine.AppScope
+import com.ojh.core.coroutine.Dispatcher
 import com.ojh.core.data.MusicRepository
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineDispatcher
