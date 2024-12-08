@@ -1,4 +1,4 @@
-package com.ojh.feature.player
+package com.ojh.feature.library
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

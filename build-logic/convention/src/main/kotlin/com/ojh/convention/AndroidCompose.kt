@@ -34,5 +34,7 @@ internal fun Project.configureCompose(
         project.providers.gradleProperty("enableComposeCompilerReports").onlyIfTrue()
             .relativeToRootProject("compose-reports")
             .let(reportsDestination::set)
+
+        stabilityConfigurationFile.set(project.rootDir.resolve("stability_config.conf"))
     }
 }

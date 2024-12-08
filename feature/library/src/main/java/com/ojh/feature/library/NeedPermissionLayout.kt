@@ -1,4 +1,4 @@
-package com.ojh.feature.player
+package com.ojh.feature.library
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Button

@@ -1,4 +1,4 @@
-package com.ojh.feature.player
+package com.ojh.feature.library
 
 internal sealed interface LibrarySideEffect {
     data class LaunchRequestPermission(val permission: String) : LibrarySideEffect

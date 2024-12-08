@@ -1,4 +1,4 @@
-package com.ojh.feature.player
+package com.ojh.feature.library
 
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text
