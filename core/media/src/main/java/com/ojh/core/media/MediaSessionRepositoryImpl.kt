@@ -2,6 +2,8 @@ package com.ojh.core.media
 
 import android.content.ComponentName
 import android.content.Context
+import android.media.AudioManager
+import androidx.media3.common.C
 import androidx.media3.common.MediaMetadata
 import androidx.media3.common.Player
 import androidx.media3.session.MediaController
@@ -31,6 +33,9 @@ internal class MediaSessionRepositoryImpl @Inject constructor(
     private val _nowPlayingNowPlayingInfo =
         MutableStateFlow<NowPlayingInfoState>(NowPlayingInfoState.DisConnected)
     private var mediaController: MediaController? = null
+
+    private val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+    private val maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
 
     init {
         val sessionToken =
@@ -65,8 +70,8 @@ internal class MediaSessionRepositoryImpl @Inject constructor(
                         updateNowPlayingInfo()
                     }
 
-                    override fun onVolumeChanged(volume: Float) {
-                        super.onVolumeChanged(volume)
+                    override fun onDeviceVolumeChanged(volume: Int, muted: Boolean) {
+                        super.onDeviceVolumeChanged(volume, muted)
                         updateNowPlayingInfo()
                     }
                 })
@@ -127,7 +132,7 @@ internal class MediaSessionRepositoryImpl @Inject constructor(
     }
 
     override fun changeVolume(volume: Float) {
-        mediaController?.volume = volume
+        mediaController?.setDeviceVolume((volume * maxVolume).toInt(), C.VOLUME_FLAG_SHOW_UI)
     }
 
     override fun changeProgress(progress: Float) {
@@ -151,7 +156,7 @@ internal class MediaSessionRepositoryImpl @Inject constructor(
             hasNext = controller.hasNextMediaItem(),
             isRepeated = controller.repeatMode == Player.REPEAT_MODE_ONE,
             isShuffled = controller.shuffleModeEnabled,
-            volume = controller.volume
+            volume = controller.deviceVolume / maxVolume.toFloat()
         )
 
         _nowPlayingNowPlayingInfo.update { NowPlayingInfoState.Connected(nowPlayingInfo) }

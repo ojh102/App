@@ -12,5 +12,5 @@
     <string name="feature_player_next_cd">다음</string>
     <string name="feature_player_shuffle_on_cd">셔플</string>
     <string name="feature_player_shuffle_off_cd">순서대로듣기</string>
-    <string name="feature_player_volume_slider_title">현재 볼륨 : %1$s</string>
+    <string name="feature_player_volume_slider_title">볼륨</string>
 </resources>

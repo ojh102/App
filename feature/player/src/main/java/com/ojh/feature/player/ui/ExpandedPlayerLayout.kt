@@ -16,11 +16,6 @@ import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -213,12 +208,11 @@ private fun VolumeSlider(
     onChangeVolume: (Float) -> Unit
 ) {
     Column(modifier = Modifier.padding(horizontal = 16.dp)) {
-        Text(text = stringResource(R.string.feature_player_volume_slider_title, volume))
+        Text(text = stringResource(R.string.feature_player_volume_slider_title))
         Slider(
             value = volume,
             onValueChange = onChangeVolume,
-            colors = SliderDefaults.colors(inactiveTrackColor = MaterialTheme.colorScheme.secondary),
-            steps = 10
+            colors = SliderDefaults.colors(inactiveTrackColor = MaterialTheme.colorScheme.secondary)
         )
     }
 }

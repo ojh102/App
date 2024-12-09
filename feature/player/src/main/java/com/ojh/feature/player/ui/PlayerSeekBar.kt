@@ -5,10 +5,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -20,10 +19,10 @@ internal fun PlayerSeekBar(
     onChangeProgress: (Float) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    var sliderPosition by remember { mutableFloatStateOf(currentPosition / duration.toFloat()) }
-    LaunchedEffect(currentPosition, duration) {
-        sliderPosition = currentPosition / duration.toFloat()
-    }
+    var sliderPosition by rememberSaveable(
+        currentPosition,
+        duration
+    ) { mutableFloatStateOf(currentPosition / duration.toFloat()) }
     Slider(
         modifier = modifier.height(14.dp),
         value = sliderPosition,

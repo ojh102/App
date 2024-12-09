@@ -10,6 +10,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.PowerManager
 import androidx.annotation.OptIn
 import androidx.core.app.NotificationCompat
 import androidx.media3.common.AudioAttributes
@@ -118,11 +119,16 @@ class MusicPlayerService : MediaSessionService() {
         return START_STICKY
     }
 
+    @OptIn(UnstableApi::class)
     private fun initMediaSession(): MediaSession {
         val player = ExoPlayer.Builder(this)
+            .setWakeMode(PowerManager.PARTIAL_WAKE_LOCK)
+            .setHandleAudioBecomingNoisy(true)
+            .setDeviceVolumeControlEnabled(true)
             .setAudioAttributes(
                 AudioAttributes.Builder()
                     .setContentType(C.AUDIO_CONTENT_TYPE_MUSIC)
+                    .setUsage(C.USAGE_MEDIA)
                     .build(),
                 true
             )
