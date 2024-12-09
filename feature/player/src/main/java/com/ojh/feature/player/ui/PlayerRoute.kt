@@ -75,6 +75,7 @@ private fun PlayerContent(
             uiState.isExpanded -> {
                 ExpandedPlayerLayout(
                     nowPlayingInfo = uiState.nowPlayingInfo,
+                    onClickBack = { onAction(PlayerAction.ClickBack) },
                     onClickRepeat = { onAction(PlayerAction.ClickRepeat) },
                     onClickPrev = { onAction(PlayerAction.ClickPrev) },
                     onTogglePlay = { onAction(PlayerAction.TogglePlay) },

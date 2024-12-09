@@ -45,14 +45,14 @@ internal fun AlbumItem(
             style = MaterialTheme.typography.titleMedium,
             overflow = TextOverflow.Ellipsis,
             maxLines = 1,
-            modifier = Modifier.padding(top = 8.dp),
+            modifier = Modifier.padding(top = 8.dp, start = 16.dp, end = 16.dp),
         )
         Text(
             text = album.artist,
             style = MaterialTheme.typography.bodyMedium,
             overflow = TextOverflow.Ellipsis,
             maxLines = 1,
-            modifier = Modifier.padding(top = 8.dp, bottom = 16.dp)
+            modifier = Modifier.padding(top = 8.dp, bottom = 16.dp, start = 16.dp, end = 16.dp)
         )
     }
 }

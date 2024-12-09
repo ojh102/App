@@ -37,6 +37,8 @@ internal class MediaSessionRepositoryImpl @Inject constructor(
     private val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
     private val maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
 
+    private var lastUpdateTime = 0L
+
     init {
         val sessionToken =
             SessionToken(context, ComponentName(context, MusicPlayerService::class.java))
@@ -83,7 +85,10 @@ internal class MediaSessionRepositoryImpl @Inject constructor(
                 delay(500)
                 withContext(mainDispatcher) {
                     if (mediaController?.isPlaying == true) {
-                        updateNowPlayingInfo()
+                        val elapsedTime = System.currentTimeMillis() - lastUpdateTime
+                        if (elapsedTime >= 500) {
+                            updateNowPlayingInfo()
+                        }
                     }
                 }
             }
@@ -141,6 +146,8 @@ internal class MediaSessionRepositoryImpl @Inject constructor(
     }
 
     private fun updateNowPlayingInfo() {
+        lastUpdateTime = System.currentTimeMillis()
+
         val controller = mediaController ?: return
         val mediaMetadata = controller.mediaMetadata
 

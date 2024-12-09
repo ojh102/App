@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -18,6 +20,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -34,6 +37,7 @@ import java.util.Locale
 @Composable
 internal fun ExpandedPlayerLayout(
     nowPlayingInfo: NowPlayingInfoUiModel,
+    onClickBack: () -> Unit,
     onClickRepeat: () -> Unit,
     onClickPrev: () -> Unit,
     onTogglePlay: () -> Unit,
@@ -46,10 +50,16 @@ internal fun ExpandedPlayerLayout(
     Column(
         modifier = modifier
             .background(color = MaterialTheme.colorScheme.secondaryContainer)
-            .navigationBarsPadding()
-            .fillMaxWidth(),
+            .navigationBarsPadding(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        IconButton(onClick = onClickBack, modifier = Modifier.align(Alignment.Start)) {
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                contentDescription = stringResource(R.string.feature_player_back_cd)
+            )
+        }
+
         AlbumInfo(
             title = nowPlayingInfo.title,
             artist = nowPlayingInfo.artist,
@@ -79,7 +89,9 @@ internal fun ExpandedPlayerLayout(
 
         Text(
             text = nowPlayingInfo.toDurationText(),
-            modifier = Modifier.padding(horizontal = 16.dp)
+            modifier = Modifier
+                .padding(horizontal = 16.dp)
+                .align(Alignment.End)
         )
         PlayerSeekBar(
             modifier = Modifier.padding(horizontal = 16.dp),
@@ -111,12 +123,12 @@ private fun AlbumInfo(
 ) {
     Text(
         modifier = Modifier.padding(top = 16.dp),
-        text = title ?: "재생중인 음악이 없습니다.",
+        text = title ?: stringResource(R.string.feature_player_empty_title),
         style = MaterialTheme.typography.titleLarge
     )
     Spacer(modifier = Modifier.height(4.dp))
     Text(
-        text = artist ?: "앨범에서 음악을 선택하세요.",
+        text = artist ?: stringResource(R.string.feature_player_empty_artist),
         style = MaterialTheme.typography.bodyLarge
     )
 
@@ -230,6 +242,7 @@ private fun ExpandedPlayerLayoutPreview() {
                 currentPosition = 100000,
                 duration = 200000
             ).toUiModel(),
+            onClickBack = {},
             onClickRepeat = {},
             onClickNext = {},
             onClickShuffle = {},
