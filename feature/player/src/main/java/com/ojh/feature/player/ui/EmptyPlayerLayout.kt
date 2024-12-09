@@ -10,9 +10,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ojh.core.compose.theme.AppTheme
+import com.ojh.feature.player.R
 
 @Composable
 internal fun EmptyPlayerLayout() {
@@ -24,12 +26,12 @@ internal fun EmptyPlayerLayout() {
         verticalArrangement = Arrangement.Center
     ) {
         Text(
-            text = "재생목록이 비어있습니다.",
+            text = stringResource(R.string.feature_player_empty_player_title),
             style = MaterialTheme.typography.titleSmall
         )
         Spacer(modifier = Modifier.height(4.dp))
         Text(
-            text = "앨범에서 트랙을 재생하세요.",
+            text = stringResource(R.string.feature_player_empty_player_body),
             style = MaterialTheme.typography.bodySmall
         )
     }

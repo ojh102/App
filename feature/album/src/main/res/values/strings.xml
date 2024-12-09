@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="feature_album_sequence_play_cd">순서대로 재생</string>
+    <string name="feature_album_random_play_cd">랜덤 재생</string>
+    <string name="feature_album_artwork_cd">아트워크</string>
+</resources>

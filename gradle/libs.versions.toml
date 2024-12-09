@@ -1,4 +1,5 @@
 [versions]
+androidDesugarJdkLibs = "2.0.4"
 androidGradlePlugin = "8.7.3"
 androidTools = "31.7.2"
 kotlin = "2.0.20"
@@ -25,6 +26,7 @@ mockK = "1.13.13"
 turbine = "1.2.0"
 
 [libraries]
+android-desugarJdkLibs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "androidDesugarJdkLibs" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "androidxLifecycle" }

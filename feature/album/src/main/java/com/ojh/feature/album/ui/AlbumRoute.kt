@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -83,15 +84,23 @@ private fun AlbumContent(
     modifier: Modifier = Modifier,
 ) {
     Column(modifier.fillMaxSize()) {
-        AlbumInfoLayout(uiState.album)
-        AlbumPlayLayout(
-            onClickSequencePlay = { onAction(AlbumAction.ClickSequencePlay) },
-            onClickRandomPlay = { onAction(AlbumAction.ClickRandomPlay) }
-        )
+        if (uiState.album == null) {
+            CircularProgressIndicator()
+        } else {
+            AlbumInfoLayout(uiState.album)
+            AlbumPlayLayout(
+                onClickSequencePlay = { onAction(AlbumAction.ClickSequencePlay) },
+                onClickRandomPlay = { onAction(AlbumAction.ClickRandomPlay) }
+            )
+        }
+
         LazyColumn(
             modifier = Modifier.fillMaxWidth(),
             verticalArrangement = Arrangement.spacedBy(1.dp)
         ) {
+            if (uiState.tracks.isEmpty()) {
+                item { CircularProgressIndicator() }
+            }
             items(items = uiState.tracks, key = { it.id }) { track ->
                 TrackItem(
                     track = track,

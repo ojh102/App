@@ -5,8 +5,10 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.ojh.core.compose.theme.AppTheme
+import com.ojh.feature.library.R
 
 @Composable
 internal fun NeedPermissionLayout(
@@ -14,9 +16,9 @@ internal fun NeedPermissionLayout(
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier) {
-        Text("미디어 권한이 없습니다. 권한을 획득하세요.")
+        Text(stringResource(R.string.feature_library_need_permission_layout_title))
         Button(onClick = onClickRequestPermission) {
-            Text("권한 획득하기")
+            Text(stringResource(R.string.feature_library_need_permission_layout_request_button_text))
         }
     }
 }

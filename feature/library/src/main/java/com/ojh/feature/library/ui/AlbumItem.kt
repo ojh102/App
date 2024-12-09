@@ -12,11 +12,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.ojh.core.compose.theme.AppTheme
+import com.ojh.feature.library.R
 import com.ojh.feature.library.ui.model.AlbumUiModel
 
 @Composable
@@ -33,7 +35,7 @@ internal fun AlbumItem(
     ) {
         AsyncImage(
             model = album.albumArtUri,
-            contentDescription = null,
+            contentDescription = stringResource(R.string.feature_library_artwork_cd),
             modifier = modifier
                 .fillMaxWidth()
                 .aspectRatio(1f)

@@ -90,6 +90,7 @@ private fun PlayerContent(
                 CollapsedPlayerLayout(
                     nowPlayingInfo = uiState.nowPlayingInfo,
                     onTogglePlay = { onAction(PlayerAction.TogglePlay) },
+                    onChangeProgress = { onAction(PlayerAction.ChangeProgress(it)) },
                     modifier = Modifier.clickable { onAction(PlayerAction.ToggleExpand) }
                 )
             }

@@ -2,4 +2,5 @@
     <string name="app_name">App</string>
     <string name="library">라이브러리</string>
     <string name="album">앨범</string>
+    <string name="cd_back">뒤로가기</string>
 </resources>

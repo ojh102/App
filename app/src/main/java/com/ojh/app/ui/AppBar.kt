@@ -11,6 +11,8 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import com.ojh.app.R
 import com.ojh.core.navigation.AppDestination
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -32,7 +34,7 @@ internal fun AppBar(
                 IconButton(onClick = navigateUp) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = null
+                        contentDescription = stringResource(R.string.cd_back)
                     )
                 }
             }

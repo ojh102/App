@@ -17,11 +17,13 @@
 package com.ojh.convention
 
 import com.android.build.api.dsl.CommonExtension
+import org.apache.groovy.json.internal.Chr.add
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.kotlin.dsl.assign
 import org.gradle.kotlin.dsl.configure
+import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.provideDelegate
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension
@@ -44,10 +46,15 @@ internal fun Project.configureKotlinAndroid(
         compileOptions {
             sourceCompatibility = JavaVersion.VERSION_19
             targetCompatibility = JavaVersion.VERSION_19
+            isCoreLibraryDesugaringEnabled = true
         }
     }
 
     configureKotlin<KotlinAndroidProjectExtension>()
+
+    dependencies {
+        add("coreLibraryDesugaring", libs.findLibrary("android.desugarJdkLibs").get())
+    }
 }
 
 /**

@@ -13,10 +13,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.ojh.core.compose.theme.AppTheme
+import com.ojh.feature.album.R
 import com.ojh.feature.album.ui.model.AlbumUiModel
 
 @Composable
@@ -34,7 +36,7 @@ internal fun AlbumInfoLayout(album: AlbumUiModel?, modifier: Modifier = Modifier
         } else {
             AsyncImage(
                 model = album.albumArtUri,
-                contentDescription = null,
+                contentDescription = stringResource(R.string.feature_album_artwork_cd),
                 modifier = Modifier.size(80.dp)
             )
 

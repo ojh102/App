@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="feature_library_need_permission_layout_title">미디어 권한이 없습니다. 권한을 획득하세요.</string>
+    <string name="feature_library_need_permission_layout_request_button_text">권한 획득하기</string>
+    <string name="feature_library_settings_dialog_title">설정에서 권한을 켜주세요</string>
+    <string name="feature_library_settings_dialog_cofirm_button_text">설정으로 가기</string>
+    <string name="feature_library_settings_dialog_dismiss_button_text">취소</string>
+    <string name="feature_library_artwork_cd">아트워크</string>
+</resources>

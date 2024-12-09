@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="feature_player_empty_player_title">재생목록이 비어있습니다.</string>
+    <string name="feature_player_empty_player_body">앨범에서 트랙을 재생하세요.</string>
+    <string name="feature_player_play_toggle_button_cd">플레이 토글 버튼</string>
+    <string name="feature_player_artwork_cd">아트워크</string>
+    <string name="feature_player_repeat_one_cd">한곡반복</string>
+    <string name="feature_player_repeat_off_cd">반복</string>
+    <string name="feature_player_prev_cd">이전</string>
+    <string name="feature_player_stop_cd">알시정지</string>
+    <string name="feature_player_play_cd">재생</string>
+    <string name="feature_player_next_cd">다음</string>
+    <string name="feature_player_shuffle_on_cd">셔플</string>
+    <string name="feature_player_shuffle_off_cd">순서대로듣기</string>
+    <string name="feature_player_volume_slider_title">현재 볼륨 : %1$s</string>
+</resources>
