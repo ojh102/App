@@ -12,14 +12,12 @@ class FeatureConventionPlugin : Plugin<Project> {
                 apply("ojh.android.library")
                 apply("ojh.android.library.compose")
                 apply("ojh.hilt")
-                apply("org.jetbrains.kotlin.plugin.serialization")
             }
             extensions.configure<LibraryExtension> {
                 testOptions.animationsDisabled = true
             }
 
             dependencies {
-                add("implementation", libs.findLibrary("kotlinx.serialization.json").get())
                 add("debugImplementation", libs.findBundle("test").get())
             }
         }

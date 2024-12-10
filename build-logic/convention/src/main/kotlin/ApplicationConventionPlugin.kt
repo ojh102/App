@@ -13,7 +13,6 @@ class ApplicationConventionPlugin : Plugin<Project> {
             with(pluginManager) {
                 apply("com.android.application")
                 apply("org.jetbrains.kotlin.android")
-                apply("org.jetbrains.kotlin.plugin.serialization")
             }
 
             extensions.configure<ApplicationExtension> {
@@ -21,10 +20,6 @@ class ApplicationConventionPlugin : Plugin<Project> {
                 defaultConfig.targetSdk = targetSdkVersion
                 @Suppress("UnstableApiUsage")
                 testOptions.animationsDisabled = true
-            }
-
-            dependencies {
-                add("implementation", libs.findLibrary("kotlinx.serialization.json").get())
             }
         }
     }

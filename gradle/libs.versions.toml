@@ -1,24 +1,21 @@
 [versions]
-androidDesugarJdkLibs = "2.0.4"
+androidDesugarJdkLibs = "2.1.3"
 androidGradlePlugin = "8.7.3"
-androidTools = "31.7.2"
-kotlin = "2.0.20"
+androidTools = "31.7.3"
+kotlin = "2.0.21"
 coreKtx = "1.15.0"
 junit = "4.13.2"
 androidxLifecycle = "2.8.7"
 activityCompose = "1.9.3"
 composeBom = "2024.11.00"
 kotlinxCoroutines = "1.9.0"
-kotlinxSerializationJson = "1.6.3"
 ksp = "2.0.20-1.0.25"
 coil = "2.7.0"
 hilt = "2.52"
 hiltExt = "1.2.0"
 androidxHiltNavigationCompose = "1.2.0"
 androidxNavigation = "2.8.4"
-room = "2.6.1"
 appcompat = "1.7.0"
-material = "1.12.0"
 material3 = "1.3.1"
 media3 = "1.5.0"
 timber = "5.0.1"
@@ -33,7 +30,6 @@ androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecyc
 androidx-navigation-runtime-ktx = { group = "androidx.navigation", name = "navigation-runtime-ktx", version.ref = "androidxNavigation" }
 androidx-media3-session = { group = "androidx.media3", name = "media3-session", version.ref = "media3" }
 androidx-media3-exoplayer = { group = "androidx.media3", name = "media3-exoplayer", version.ref = "media3" }
-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
 compose-hilt-navigation = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "androidxHiltNavigationCompose" }
 compose-lifecycle-runtime = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidxLifecycle" }
@@ -42,29 +38,22 @@ compose-navigation = { group = "androidx.navigation", name = "navigation-compose
 compose-activity = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
 compose-ui = { group = "androidx.compose.ui", name = "ui" }
-compose-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
 compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 compose-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
-compose-test-ui = { group = "androidx.compose.ui", name = "ui-test-junit4" }
-compose-test-uiManifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 
 coil-kt = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
 coil-kt-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
-hilt-android-testing = { group = "com.google.dagger", name = "hilt-android-testing", version.ref = "hilt" }
 hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
 hilt-core = { group = "com.google.dagger", name = "hilt-core", version.ref = "hilt" }
 hilt-ext-compiler = { group = "androidx.hilt", name = "hilt-compiler", version.ref = "hiltExt" }
-hilt-ext-work = { group = "androidx.hilt", name = "hilt-work", version.ref = "hiltExt" }
 javax-inject = { module = "javax.inject:javax.inject", version = "1" }
 
 kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib-jdk8", version.ref = "kotlin" }
-kotlin-test = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.ref = "kotlin" }
 kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }
 kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinxCoroutines" }
-kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 
 timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
 
@@ -80,7 +69,6 @@ android-tools-common = { group = "com.android.tools", name = "common", version.r
 compose-gradlePlugin = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "kotlin" }
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
-room-gradlePlugin = { group = "androidx.room", name = "room-gradle-plugin", version.ref = "room" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
@@ -88,9 +76,7 @@ kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
-room = { id = "androidx.room", version.ref = "room" }
 android-library = { id = "com.android.library", version.ref = "androidGradlePlugin" }
 
 ojh-android-library-compose = { id = "ojh.android.library.compose" }
@@ -107,13 +93,10 @@ androidx = [
     "androidx-appcompat",
     "androidx-core-ktx",
     "androidx-lifecycle-runtime-ktx",
-    "material"
 ]
 
 kotlin = [
     "kotlin-stdlib",
-    "kotlin-test",
-    "kotlinx-serialization-json",
     "kotlinx-coroutines-core",
     "kotlinx-coroutines-android",
 ]
@@ -122,7 +105,6 @@ compose = [
     "compose-bom",
     "compose-activity",
     "compose-ui",
-    "compose-ui-graphics",
     "compose-ui-tooling-preview",
     "compose-material3",
     "compose-hilt-navigation",
@@ -132,18 +114,14 @@ compose = [
 ]
 
 compose-debug = [
-    "compose-test-ui",
     "compose-ui-tooling",
-    "compose-test-uiManifest"
 ]
 
 hilt = [
     "hilt-android",
-    "hilt-android-testing",
     "hilt-compiler",
     "hilt-core",
     "hilt-ext-compiler",
-    "hilt-ext-work",
     "javax-inject"
 ]
 
