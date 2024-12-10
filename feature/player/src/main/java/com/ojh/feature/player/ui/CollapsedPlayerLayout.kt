@@ -41,6 +41,7 @@ internal fun CollapsedPlayerLayout(
         PlayerSeekBar(
             currentPosition = nowPlayingInfo.currentPosition,
             duration = nowPlayingInfo.duration,
+            showDurationText = false,
             onChangeProgress = onChangeProgress
         )
         Row(

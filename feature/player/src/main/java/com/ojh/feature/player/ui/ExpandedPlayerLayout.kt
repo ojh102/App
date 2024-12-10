@@ -87,32 +87,16 @@ internal fun ExpandedPlayerLayout(
 
         Spacer(modifier = Modifier.height(4.dp))
 
-        Text(
-            text = nowPlayingInfo.toDurationText(),
-            modifier = Modifier
-                .padding(horizontal = 16.dp)
-                .align(Alignment.End)
-        )
         PlayerSeekBar(
             modifier = Modifier.padding(horizontal = 16.dp),
             currentPosition = nowPlayingInfo.currentPosition,
             duration = nowPlayingInfo.duration,
+            showDurationText = true,
             onChangeProgress = onChangeProgress
         )
 
         Spacer(modifier = Modifier.height(16.dp))
     }
-}
-
-private fun NowPlayingInfoUiModel.toDurationText(): String {
-    return "${currentPosition.toDurationText()}/${duration.toDurationText()}"
-}
-
-private fun Long.toDurationText(): String {
-    val (minutes, seconds) = with(Duration.ofMillis(this)) {
-        toMinutesPart() to toSecondsPart()
-    }
-    return String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds)
 }
 
 @Composable
